@@ -3,52 +3,9 @@ import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import WorkoutCard from '../components/WorkoutCard';
 import { CalendarDays, Clock, Filter } from 'lucide-react';
+import { getWorkouts } from '@/storage';
 
-// Mock data
-const mockWorkouts = [
-  {
-    id: '1',
-    name: 'Treino A - Peito e Tríceps',
-    date: new Date(2023, 5, 1),
-    exerciseCount: 7,
-    workoutType: 'Força'
-  },
-  {
-    id: '2',
-    name: 'Treino B - Costas e Bíceps',
-    date: new Date(2023, 5, 3),
-    exerciseCount: 6,
-    workoutType: 'Hipertrofia'
-  },
-  {
-    id: '3',
-    name: 'Treino C - Pernas',
-    date: new Date(2023, 5, 5),
-    exerciseCount: 8,
-    workoutType: 'Força'
-  },
-  {
-    id: '4',
-    name: 'Treino A - Peito e Tríceps',
-    date: new Date(2023, 4, 29),
-    exerciseCount: 7,
-    workoutType: 'Força'
-  },
-  {
-    id: '5',
-    name: 'Treino B - Costas e Bíceps',
-    date: new Date(2023, 4, 27),
-    exerciseCount: 6,
-    workoutType: 'Hipertrofia'
-  },
-  {
-    id: '6',
-    name: 'Treino C - Pernas',
-    date: new Date(2023, 4, 25),
-    exerciseCount: 8,
-    workoutType: 'Força'
-  },
-];
+const mockWorkouts = getWorkouts("victor");
 
 const WorkoutHistory = () => {
   const [filterOpen, setFilterOpen] = useState(false);
@@ -107,7 +64,6 @@ const WorkoutHistory = () => {
             </div>
           </div>
         )}
-
         <div className="space-y-6">
           {filteredWorkouts.length > 0 ? (
             <>
