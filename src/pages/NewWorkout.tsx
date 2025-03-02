@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { Exercise, Workout } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { addWorkout } from "@/storage";
+import moment from "moment";
 
 const workoutTypes = ["Força", "Hipertrofia", "Resistência", "Funcional"];
 
@@ -74,11 +75,12 @@ const NewWorkout = () => {
       toast.error("Todos os exercícios precisam ter um nome");
       return;
     }
-
+    const convertedDate = moment(date).utc().toDate();
+    
     const newWorkout: Workout = {
       id: uuidv4(),
       name: name,
-      date: date,
+      date: convertedDate.toISOString(),
       exerciseCount: exercises.length,
       workoutType: workoutType,
       exercises: exercises,

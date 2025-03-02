@@ -1,45 +1,21 @@
-
-import React, { useState } from 'react';
-import Layout from '../components/Layout';
-import WorkoutCard from '../components/WorkoutCard';
-import Calendar from '../components/Calendar';
-import AddWorkoutButton from '../components/AddWorkoutButton';
-import { Dumbbell } from 'lucide-react';
-
-// Mock data
-const mockWorkouts = [
-  {
-    id: '1',
-    name: 'Treino A - Peito e Tríceps',
-    date: new Date(2023, 5, 1),
-    exerciseCount: 7,
-    workoutType: 'Força'
-  },
-  {
-    id: '2',
-    name: 'Treino B - Costas e Bíceps',
-    date: new Date(2023, 5, 3),
-    exerciseCount: 6,
-    workoutType: 'Hipertrofia'
-  },
-  {
-    id: '3',
-    name: 'Treino C - Pernas',
-    date: new Date(2023, 5, 5),
-    exerciseCount: 8,
-    workoutType: 'Força'
-  },
-];
-
-const workoutDates = mockWorkouts.map(workout => workout.date);
+import React, { useState } from "react";
+import Layout from "../components/Layout";
+import WorkoutCard from "../components/WorkoutCard";
+import Calendar from "../components/Calendar";
+import AddWorkoutButton from "../components/AddWorkoutButton";
+import { Dumbbell } from "lucide-react";
+import { getWorkouts } from "@/storage";
 
 const Index = () => {
+  const [mockWorkouts, setMockWorkouts] = useState(getWorkouts("victor"));
   const [selectedDate, setSelectedDate] = useState(new Date());
-  
-  const filteredWorkouts = mockWorkouts.filter(workout => 
-    workout.date.getDate() === selectedDate.getDate() &&
-    workout.date.getMonth() === selectedDate.getMonth() &&
-    workout.date.getFullYear() === selectedDate.getFullYear()
+  const workoutDates = mockWorkouts.map((workout) => workout.date);
+
+  const filteredWorkouts = mockWorkouts.filter(
+    (workout) =>
+      workout.date.getDate() === selectedDate.getDate() &&
+      workout.date.getMonth() === selectedDate.getMonth() &&
+      workout.date.getFullYear() === selectedDate.getFullYear()
   );
 
   return (
@@ -50,7 +26,7 @@ const Index = () => {
           <p className="text-muted-foreground">Acompanhe seu progresso</p>
         </header>
 
-        <Calendar 
+        <Calendar
           workoutDates={workoutDates}
           onSelectDate={setSelectedDate}
           selectedDate={selectedDate}
@@ -58,10 +34,10 @@ const Index = () => {
 
         <div className="mb-4">
           <h2 className="text-xl font-semibold mb-3">Treinos de hoje</h2>
-          
+
           {filteredWorkouts.length > 0 ? (
-            filteredWorkouts.map(workout => (
-              <WorkoutCard 
+            filteredWorkouts.map((workout) => (
+              <WorkoutCard
                 key={workout.id}
                 id={workout.id}
                 name={workout.name}
@@ -77,7 +53,8 @@ const Index = () => {
               </div>
               <h3 className="text-lg font-medium mb-1">Nenhum treino hoje</h3>
               <p className="text-muted-foreground text-sm max-w-xs mb-4">
-                Você não tem nenhum treino cadastrado para esta data. Que tal adicionar um?
+                Você não tem nenhum treino cadastrado para esta data. Que tal
+                adicionar um?
               </p>
             </div>
           )}

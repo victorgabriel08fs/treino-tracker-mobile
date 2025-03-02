@@ -32,7 +32,9 @@ export const addWorkout = (username: string, newWorkout: Workout) => {
 export const getWorkouts = (username: string): Workout[] => {
   const users = getStoredData();
   const user = users.find((user) => user.username === username);
-  return user ? user.workouts : [];
+  if(!user) return [];
+  const workouts = user.workouts.map((workout) => ({ ...workout, date: new Date(workout.date) }));
+  return workouts;
 }
 
 // Remove um treino por ID

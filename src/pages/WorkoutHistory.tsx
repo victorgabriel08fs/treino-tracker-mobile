@@ -1,22 +1,42 @@
-
-import React, { useState } from 'react';
-import Layout from '../components/Layout';
-import WorkoutCard from '../components/WorkoutCard';
-import { CalendarDays, Clock, Filter } from 'lucide-react';
-import { getWorkouts } from '@/storage';
-
-const mockWorkouts = getWorkouts("victor");
+import React, { useState } from "react";
+import Layout from "../components/Layout";
+import WorkoutCard from "../components/WorkoutCard";
+import { CalendarDays, Clock, Filter } from "lucide-react";
+import { getWorkouts } from "@/storage";
 
 const WorkoutHistory = () => {
+  const [mockWorkouts, setMockWorkouts] = useState(getWorkouts("victor"));
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
-    type: 'all',
+    type: "all",
   });
+  const [periods, setPeriods] = useState([]);
 
-  const filteredWorkouts = mockWorkouts.filter(workout => {
-    if (filters.type === 'all') return true;
+  const filteredWorkouts = mockWorkouts.filter((workout) => {
+    if (filters.type === "all") return true;
     return workout.workoutType === filters.type;
   });
+
+  const sortedWorkouts = filteredWorkouts.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  const groupedWorkouts = sortedWorkouts.reduce((acc, workout) => {
+    // Convertendo a data para UTC para evitar problemas de fuso horário
+    const date = new Date(workout.date);
+    
+    const monthYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getUTCFullYear()}`;
+  
+    if (!acc[monthYear]) {
+      acc[monthYear] = [];
+    }
+    acc[monthYear].push(workout);
+  
+    return acc;
+  }, {});
+  
 
   return (
     <Layout>
@@ -26,7 +46,7 @@ const WorkoutHistory = () => {
             <h1 className="text-2xl font-bold tracking-tight">Histórico</h1>
             <p className="text-muted-foreground">Seus treinos anteriores</p>
           </div>
-          <button 
+          <button
             onClick={() => setFilterOpen(!filterOpen)}
             className="p-2 rounded-full hover:bg-accent"
           >
@@ -39,61 +59,45 @@ const WorkoutHistory = () => {
             <h2 className="text-sm font-medium mb-3">Filtrar por tipo</h2>
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => setFilters({ ...filters, type: 'all' })}
+                onClick={() => setFilters({ ...filters, type: "all" })}
                 className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                  filters.type === 'all' 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'bg-accent'
+                  filters.type === "all"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-accent"
                 }`}
               >
                 Todos
               </button>
-              {['Força', 'Hipertrofia', 'Resistência', 'Funcional'].map(type => (
-                <button
-                  key={type}
-                  onClick={() => setFilters({ ...filters, type })}
-                  className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                    filters.type === type 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-accent'
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
+              {["Força", "Hipertrofia", "Resistência", "Funcional"].map(
+                (type) => (
+                  <button
+                    key={type}
+                    onClick={() => setFilters({ ...filters, type })}
+                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                      filters.type === type
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-accent"
+                    }`}
+                  >
+                    {type}
+                  </button>
+                )
+              )}
             </div>
           </div>
         )}
-        <div className="space-y-6">
-          {filteredWorkouts.length > 0 ? (
-            <>
-              <div>
-                <div className="flex items-center space-x-2 mb-3">
-                  <CalendarDays className="h-4 w-4 text-primary" />
-                  <h2 className="text-lg font-semibold">Junho 2023</h2>
-                </div>
-                <div>
-                  {filteredWorkouts.slice(0, 3).map(workout => (
-                    <WorkoutCard 
-                      key={workout.id}
-                      id={workout.id}
-                      name={workout.name}
-                      date={workout.date}
-                      exerciseCount={workout.exerciseCount}
-                      workoutType={workout.workoutType}
-                    />
-                  ))}
-                </div>
-              </div>
 
-              <div>
+        <div className="space-y-6">
+          {Object.entries(groupedWorkouts).length > 0 ? (
+            Object.entries(groupedWorkouts).map(([monthYear, workouts]) => (
+              <div key={monthYear}>
                 <div className="flex items-center space-x-2 mb-3">
                   <CalendarDays className="h-4 w-4 text-primary" />
-                  <h2 className="text-lg font-semibold">Maio 2023</h2>
+                  <h2 className="text-lg font-semibold">{monthYear}</h2>
                 </div>
                 <div>
-                  {filteredWorkouts.slice(3).map(workout => (
-                    <WorkoutCard 
+                  {workouts.map((workout) => (
+                    <WorkoutCard
                       key={workout.id}
                       id={workout.id}
                       name={workout.name}
@@ -104,7 +108,7 @@ const WorkoutHistory = () => {
                   ))}
                 </div>
               </div>
-            </>
+            ))
           ) : (
             <div className="rounded-xl p-8 border border-dashed border-border flex flex-col items-center justify-center text-center">
               <div className="rounded-full bg-accent w-14 h-14 flex items-center justify-center mb-3">

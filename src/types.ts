@@ -10,7 +10,7 @@ export type Exercise = {
 export type Workout = {
   id: string;
   name: string;
-  date: string; 
+  date: Date; 
   exerciseCount: number;
   workoutType: string;
   exercises: Exercise[];

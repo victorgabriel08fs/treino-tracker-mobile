@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Dumbbell, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import moment from 'moment';
 
 interface WorkoutCardProps {
   id: string;
@@ -14,6 +15,7 @@ interface WorkoutCardProps {
 }
 
 const WorkoutCard = ({ id, name, date, exerciseCount, workoutType }: WorkoutCardProps) => {
+  date = moment(date).utc().toDate();
   return (
     <Link
       to={`/workout/${id}`}
@@ -28,7 +30,7 @@ const WorkoutCard = ({ id, name, date, exerciseCount, workoutType }: WorkoutCard
             <div>
               <h3 className="font-medium text-card-foreground">{name}</h3>
               <p className="text-sm text-muted-foreground">
-                {format(date, "d 'de' MMMM", { locale: ptBR })}
+                {format(new Date(date), "d 'de' MMMM", { locale: ptBR })}
               </p>
             </div>
           </div>
