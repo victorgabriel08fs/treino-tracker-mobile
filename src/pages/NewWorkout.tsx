@@ -80,7 +80,7 @@ const NewWorkout = () => {
     const newWorkout: Workout = {
       id: uuidv4(),
       name: name,
-      date: convertedDate.toISOString(),
+      date: convertedDate,
       exerciseCount: exercises.length,
       workoutType: workoutType,
       exercises: exercises,

@@ -32,10 +32,16 @@ export const addWorkout = (username: string, newWorkout: Workout) => {
 export const getWorkouts = (username: string): Workout[] => {
   const users = getStoredData();
   const user = users.find((user) => user.username === username);
-  if(!user) return [];
-  const workouts = user.workouts.map((workout) => ({ ...workout, date: new Date(workout.date) }));
+  if (!user) return [];
+  const workouts = user.workouts.map((workout) => ({
+    ...workout,
+    date: new Date(workout.date),
+  }));
   return workouts;
-}
+};
+
+export const getWorkout = (username: string, workoutId: string) =>
+  getWorkouts(username).find((workout) => workout.id === workoutId);
 
 // Remove um treino por ID
 export const removeWorkout = (username: string, workoutId: string) => {

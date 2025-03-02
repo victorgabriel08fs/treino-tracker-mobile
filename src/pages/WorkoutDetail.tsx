@@ -1,42 +1,19 @@
 
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import ExerciseItem from '../components/ExerciseItem';
 import { ArrowLeft, Calendar, Clock, Copy, MoreHorizontal, Pencil, Share2, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import BlurImage from '../components/BlurImage';
-
-// Mock data
-const mockWorkout = {
-  id: '1',
-  name: 'Treino A - Peito e Tríceps',
-  date: new Date(2023, 5, 1),
-  duration: 60,
-  workoutType: 'Força',
-  notes: 'Foco em manter a técnica correta e aumentar a carga gradualmente.',
-  exercises: [
-    { id: '1', name: 'Supino Reto', sets: 4, reps: 12, weight: 60, isCompleted: true },
-    { id: '2', name: 'Supino Inclinado', sets: 3, reps: 12, weight: 50, isCompleted: true },
-    { id: '3', name: 'Crossover', sets: 3, reps: 15, weight: 25, isCompleted: true },
-    { id: '4', name: 'Tríceps Corda', sets: 4, reps: 12, weight: 30, isCompleted: false },
-    { id: '5', name: 'Tríceps Francês', sets: 3, reps: 12, weight: 20, isCompleted: false },
-    { id: '6', name: 'Mergulho', sets: 3, reps: 10, weight: 0, isCompleted: false },
-  ]
-};
-
-interface Exercise {
-  id: string;
-  name: string;
-  sets: number;
-  reps: number;
-  weight: number;
-  isCompleted: boolean;
-}
+import { getWorkout, removeWorkout } from '@/storage';
+import { Exercise, Workout } from '@/types';
 
 const WorkoutDetail = () => {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const [mockWorkout, setMockWorkout] = useState<Workout>(getWorkout("victor", id));
   const [exercises, setExercises] = useState<Exercise[]>(mockWorkout.exercises);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -93,7 +70,9 @@ const WorkoutDetail = () => {
                       <Share2 className="h-4 w-4 mr-2" />
                       Compartilhar
                     </button>
-                    <button className="flex items-center w-full px-4 py-2 text-sm text-destructive hover:bg-accent transition-colors">
+                    <button onClick={()=>{removeWorkout("victor", id)
+                      navigate("/");
+                    }} className="flex items-center w-full px-4 py-2 text-sm text-destructive hover:bg-accent transition-colors">
                       <Trash2 className="h-4 w-4 mr-2" />
                       Excluir treino
                     </button>
