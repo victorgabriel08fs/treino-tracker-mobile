@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Dumbbell, ChevronRight } from 'lucide-react';
+import { FaPersonRunning  } from "react-icons/fa6";
+import { Dumbbell, ChevronRight, BicepsFlexed } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import moment from 'moment';
@@ -14,7 +15,27 @@ interface WorkoutCardProps {
   workoutType: string;
 }
 
+interface WorkoutIconProps {
+  type: string
+}
+
 const WorkoutCard = ({ id, name, date, exerciseCount, workoutType }: WorkoutCardProps) => {
+  const WorkoutIcon = ({ type }: WorkoutIconProps) => {
+    console.log(type);
+    switch (type) {
+      case "Força":
+        return <Dumbbell className="h-5 w-5 text-primary" />;
+      case "Hipertrofia":
+        return <BicepsFlexed className="h-5 w-5 text-red-600" />;
+      case "Resistência":
+        return <FaPersonRunning className="h-5 w-5 text-yellow-500" />;
+      case "Funcional":
+        return <FaPersonRunning 
+        className="h-5 w-5 text-primary" />;
+      default:
+        return <Dumbbell className="h-5 w-5 text-primary" />;
+    }
+  }
   date = moment(date).utc().toDate();
   return (
     <Link
@@ -25,7 +46,7 @@ const WorkoutCard = ({ id, name, date, exerciseCount, workoutType }: WorkoutCard
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Dumbbell className="h-5 w-5 text-primary" />
+              <WorkoutIcon type={workoutType}/>
             </div>
             <div>
               <h3 className="font-medium text-card-foreground">{name}</h3>

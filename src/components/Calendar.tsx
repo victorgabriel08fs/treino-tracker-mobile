@@ -75,8 +75,8 @@ const Calendar = ({ workoutDates, onSelectDate, selectedDate }: CalendarProps) =
                 ${isSelected ? 'bg-primary text-primary-foreground' : hasWorkoutOnDay ? 'font-medium' : 'hover:bg-accent'}`}
             >
               {format(day, 'd')}
-              {hasWorkoutOnDay && !isSelected && (
-                <span className="absolute bottom-1.5 w-1 h-1 rounded-full bg-primary" />
+              {hasWorkoutOnDay && (
+                <span className={`absolute bottom-1.5 w-1 h-1 rounded-full ${isSelected ? 'bg-white':'bg-primary'}`} />
               )}
             </button>
           );

@@ -18,6 +18,7 @@ const NewWorkout = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
+  const [duration, setDuration] = useState(0);
   const [workoutType, setWorkoutType] = useState(workoutTypes[0]);
   const [exercises, setExercises] = useState<Exercise[]>([
     {
@@ -81,6 +82,7 @@ const NewWorkout = () => {
       id: uuidv4(),
       name: name,
       date: convertedDate,
+      duration: duration,
       exerciseCount: exercises.length,
       workoutType: workoutType,
       exercises: exercises,
@@ -118,6 +120,17 @@ const NewWorkout = () => {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="duration">Duração do Treino (minutos)</Label>
+              <Input
+                id="duration"
+                type="number"
+                value={duration}
+                placeholder="Ex: 30 minutos"
+                onChange={(e) => setDuration(parseInt(e.target.value))}
               />
             </div>
 
@@ -229,7 +242,7 @@ const NewWorkout = () => {
                           type="number"
                           value={exercise.weight}
                           min={0}
-                          step={2.5}
+                          step={1}
                           onChange={(e) =>
                             updateExercise(
                               exercise.id,
