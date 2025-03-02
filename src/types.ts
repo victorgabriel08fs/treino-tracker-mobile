@@ -11,6 +11,7 @@ export type Workout = {
   id: string;
   name: string;
   date: Date; 
+  duration?: number;
   exerciseCount: number;
   workoutType: string;
   exercises: Exercise[];
