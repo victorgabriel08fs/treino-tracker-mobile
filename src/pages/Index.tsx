@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import WorkoutCard from "../components/WorkoutCard";
+import WorkoutCharts from "../components/WorkoutCharts";
 import Calendar from "../components/Calendar";
 import AddWorkoutButton from "../components/AddWorkoutButton";
 import { Dumbbell } from "lucide-react";
@@ -58,6 +59,11 @@ const Index = () => {
               </p>
             </div>
           )}
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold mb-3">Acompanhe seu progresso</h2>
+          <WorkoutCharts exercisesChartData={getWorkouts("victor", { sort: true })} />
         </div>
       </div>
       <AddWorkoutButton />

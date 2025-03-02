@@ -29,7 +29,7 @@ export const addWorkout = (username: string, newWorkout: Workout) => {
   saveToLocalStorage(updatedUsers);
 };
 
-export const getWorkouts = (username: string): Workout[] => {
+export const getWorkouts = (username: string, options?: any): Workout[] => {
   const users = getStoredData();
   const user = users.find((user) => user.username === username);
   if (!user) return [];
@@ -37,6 +37,14 @@ export const getWorkouts = (username: string): Workout[] => {
     ...workout,
     date: new Date(workout.date),
   }));
+
+  if (options?.sort) {
+    workouts.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
+  }
   return workouts;
 };
 

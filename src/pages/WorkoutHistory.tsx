@@ -5,7 +5,7 @@ import { CalendarDays, Clock, Filter } from "lucide-react";
 import { getWorkouts } from "@/storage";
 
 const WorkoutHistory = () => {
-  const [mockWorkouts, setMockWorkouts] = useState(getWorkouts("victor"));
+  const [mockWorkouts, setMockWorkouts] = useState(getWorkouts("victor", { sort: true }));
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     type: "all",
@@ -17,13 +17,7 @@ const WorkoutHistory = () => {
     return workout.workoutType === filters.type;
   });
 
-  const sortedWorkouts = filteredWorkouts.sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return dateB.getTime() - dateA.getTime();
-  });
-
-  const groupedWorkouts = sortedWorkouts.reduce((acc, workout) => {
+  const groupedWorkouts = filteredWorkouts.reduce((acc, workout) => {
     // Convertendo a data para UTC para evitar problemas de fuso horário
     const date = new Date(workout.date);
     

@@ -21,7 +21,6 @@ interface WorkoutIconProps {
 
 const WorkoutCard = ({ id, name, date, exerciseCount, workoutType }: WorkoutCardProps) => {
   const WorkoutIcon = ({ type }: WorkoutIconProps) => {
-    console.log(type);
     switch (type) {
       case "Força":
         return <Dumbbell className="h-5 w-5 text-primary" />;
