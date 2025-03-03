@@ -29,6 +29,23 @@ export const addWorkout = (username: string, newWorkout: Workout) => {
   saveToLocalStorage(updatedUsers);
 };
 
+// Atualiza um treino existente
+export const updateWorkout = (username: string, updatedWorkout: Workout) => {
+  const workouts = getWorkouts(username);
+  
+  const updatedUsers = getStoredData().map((user) => {
+    if (user.username === username) {
+      const updatedWorkouts = workouts.map((workout) =>
+        workout.id === updatedWorkout.id ? updatedWorkout : workout
+      );
+      return { ...user, workouts: updatedWorkouts };
+    }
+    return user;
+  });
+
+  saveToLocalStorage(updatedUsers);
+};
+
 export const getWorkouts = (username: string, options?: any): Workout[] => {
   const users = getStoredData();
   const user = users.find((user) => user.username === username);

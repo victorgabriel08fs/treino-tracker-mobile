@@ -5,9 +5,10 @@ import { Home, Calendar, PlusCircle, History, User } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
+  props?: any;
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, props }: LayoutProps) => {
   const location = useLocation();
 
   const isActive = (path: string) => {
@@ -23,7 +24,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col w-full max-w-lg mx-auto">
-      <main className="flex-1 px-4 py-6 pb-20 overflow-y-auto thin-scrollbar">
+      <main className={`flex-1 px-4 ${props?.hasHeader ? '': 'py-6'} pb-20 overflow-y-auto thin-scrollbar`}>
         {children}
       </main>
       <nav className="fixed bottom-0 left-0 right-0 z-10">

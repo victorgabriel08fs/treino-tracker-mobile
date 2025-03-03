@@ -10,6 +10,7 @@ import WorkoutDetail from "./pages/WorkoutDetail";
 import NewWorkout from "./pages/NewWorkout";
 import WorkoutHistory from "./pages/WorkoutHistory";
 import NotFound from "./pages/NotFound";
+import EditWorkout from "./pages/EditWorkout";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Index key={`index-${key}`} />} />
               <Route path="/workout/:id" element={<WorkoutDetail key={`detail-${key}`} />} />
+              <Route path="/workout/:id/edit" element={<EditWorkout key={`edit-${key}`} />} />
               <Route path="/new" element={<NewWorkout key={`new-${key}`} />} />
               <Route path="/history" element={<WorkoutHistory key={`history-${key}`} />} />
               <Route path="*" element={<NotFound />} />

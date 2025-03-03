@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../components/Layout";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -9,28 +9,23 @@ import { Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { Exercise, Workout } from "@/types";
 import { v4 as uuidv4 } from "uuid";
-import { addWorkout } from "@/storage";
+import { addWorkout, getWorkout, updateWorkout } from "@/storage";
 import moment from "moment";
 
 const workoutTypes = ["Força", "Hipertrofia", "Resistência", "Funcional"];
 
-const NewWorkout = () => {
+const EditWorkout = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [duration, setDuration] = useState(0);
-  const [workoutType, setWorkoutType] = useState(workoutTypes[0]);
-  const [exercises, setExercises] = useState<Exercise[]>([
-    {
-      id: uuidv4(),
-      name: "",
-      sets: 3,
-      reps: 12,
-      weight: 0,
-      isCompleted: false,
-    },
-  ]);
-  const [notes, setNotes] = useState("");
+  const { id } = useParams<{ id: string }>();
+    const [mockWorkout, setMockWorkout] = useState<Workout>(
+      getWorkout("victor", id)
+    );
+  const [name, setName] = useState(mockWorkout.name);
+  const [date, setDate] = useState(mockWorkout.date);
+  const [duration, setDuration] = useState(mockWorkout.duration);
+  const [workoutType, setWorkoutType] = useState(mockWorkout.workoutType);
+  const [exercises, setExercises] = useState<Exercise[]>(mockWorkout.exercises);
+  const [notes, setNotes] = useState(mockWorkout.notes);
 
   const addExercise = () => {
     setExercises([
@@ -78,8 +73,8 @@ const NewWorkout = () => {
     }
     const convertedDate = moment(date).utc().toDate();
     
-    const newWorkout: Workout = {
-      id: uuidv4(),
+    const updatedWorkout: Workout = {
+      id: id,
       name: name,
       date: convertedDate,
       duration: duration,
@@ -87,7 +82,7 @@ const NewWorkout = () => {
       workoutType: workoutType,
       exercises: exercises,
     };
-    addWorkout("victor", newWorkout);
+    updateWorkout("victor", updatedWorkout);
 
     toast.success("Treino salvo com sucesso!");
     navigate(-1);
@@ -97,8 +92,7 @@ const NewWorkout = () => {
     <Layout>
       <div className="animate-fade-in">
         <header className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight">Novo Treino</h1>
-          <p className="text-muted-foreground">Crie seu treino personalizado</p>
+          <h1 className="text-2xl font-bold tracking-tight">Treino {mockWorkout.name}</h1>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -118,7 +112,7 @@ const NewWorkout = () => {
               <Input
                 id="date"
                 type="date"
-                value={date}
+                value={moment(date).format("YYYY-MM-DD")}
                 onChange={(e) => setDate(e.target.value)}
               />
             </div>
@@ -279,4 +273,4 @@ const NewWorkout = () => {
   );
 };
 
-export default NewWorkout;
+export default EditWorkout;
