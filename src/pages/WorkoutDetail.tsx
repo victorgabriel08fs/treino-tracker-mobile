@@ -20,7 +20,7 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import BlurImage from "../components/BlurImage";
-import { getWorkout, removeWorkout } from "@/storage";
+import { changeExerciseStatus, getWorkout, removeWorkout } from "@/storage";
 import { Exercise, Workout } from "@/types";
 import { getWorkoutTypeImage } from "@/functions";
 
@@ -34,6 +34,8 @@ const WorkoutDetail = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleCompletion = (exerciseId: string) => {
+    const updated = changeExerciseStatus("victor", id, exerciseId);
+    if (!updated) return;
     setExercises((prevExercises) =>
       prevExercises.map((exercise) =>
         exercise.id === exerciseId
@@ -147,8 +149,6 @@ const WorkoutDetail = () => {
     newWindow.document.close();
   };
 
-  
-
   return (
     <Layout props={{ hasHeader: true }}>
       <div className="animate-fade-in">
@@ -179,7 +179,10 @@ const WorkoutDetail = () => {
               {menuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg border border-border z-50 animate-scale-in">
                   <div className="py-1">
-                    <Link to={`/workout/${id}/edit`} className="flex items-center w-full px-4 py-2 text-sm hover:bg-accent transition-colors">
+                    <Link
+                      to={`/workout/${id}/edit`}
+                      className="flex items-center w-full px-4 py-2 text-sm hover:bg-accent transition-colors"
+                    >
                       <Pencil className="h-4 w-4 mr-2" />
                       Editar treino
                     </Link>

@@ -46,6 +46,33 @@ export const updateWorkout = (username: string, updatedWorkout: Workout) => {
   saveToLocalStorage(updatedUsers);
 };
 
+export const changeExerciseStatus = (username: string, workoutId: string, exerciseId: string)=>{
+  const users = getStoredData();
+  const user = users.find((user) => user.username === username);
+  if (!user) return;
+
+  const updatedWorkouts = user.workouts.map((workout) => {
+    if (workout.id === workoutId) {
+      const updatedExercises = workout.exercises.map((exercise) => {
+        if (exercise.id === exerciseId) {
+          return { ...exercise, isCompleted: !exercise.isCompleted };
+        }
+        return exercise;
+      });
+      return { ...workout, exercises: updatedExercises };
+    }
+    return workout;
+  });
+
+  const updatedUsers = users.map((user) =>
+    user.username === username ? { ...user, workouts: updatedWorkouts } : user
+  );
+
+  saveToLocalStorage(updatedUsers);
+
+  return true;
+}
+
 export const getWorkouts = (username: string, options?: any): Workout[] => {
   const users = getStoredData();
   const user = users.find((user) => user.username === username);
