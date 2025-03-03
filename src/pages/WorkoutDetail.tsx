@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import ExerciseItem from "../components/ExerciseItem";
+import hipertrofia from "../../public/assets/header_images/hipertrofia.jpg";
+import forca from "../../public/assets/header_images/forca.jpg";
+import resistencia from "../../public/assets/header_images/resistencia.jpg";
+import funcional from "../../public/assets/header_images/funcional.jpg";
+
 import {
   ArrowLeft,
   Calendar,
@@ -103,16 +108,30 @@ const WorkoutDetail = () => {
         <body>
           <h1>Treinamente - Detalhes do Treino</h1>
           <h1>${mockWorkout.name}</h1>
-          <p class="info"><strong>Data:</strong> ${format(mockWorkout.date, "d 'de' MMMM", { locale: ptBR })}</p>
-          ${mockWorkout.duration ? `<p class="info"><strong>Duração:</strong> ${mockWorkout.duration} minutos</p>` : ""}
+          <p class="info"><strong>Data:</strong> ${format(
+            mockWorkout.date,
+            "d 'de' MMMM",
+            { locale: ptBR }
+          )}</p>
+          ${
+            mockWorkout.duration
+              ? `<p class="info"><strong>Duração:</strong> ${mockWorkout.duration} minutos</p>`
+              : ""
+          }
   
           <h2>Exercícios</h2>
           <ul>
-            ${exercises.map(ex => `
+            ${exercises
+              .map(
+                (ex) => `
               <li>
-                <strong>${ex.name}</strong> - ${ex.sets} séries x ${ex.reps} reps ${ex.weight ? `(${ex.weight}kg)` : ""}
+                <strong>${ex.name}</strong> - ${ex.sets} séries x ${
+                  ex.reps
+                } reps ${ex.weight ? `(${ex.weight}kg)` : ""}
               </li>
-            `).join('')}
+            `
+              )
+              .join("")}
           </ul>
   
           <script>
@@ -121,31 +140,46 @@ const WorkoutDetail = () => {
         </body>
       </html>
     `;
-  
+
     const newWindow = window.open("", "_blank");
     newWindow.document.write(printContent);
     newWindow.document.close();
   };
-  
-  
+
+  const getWorkoutTypeImage = (workoutType: string) => {
+    switch (workoutType) {
+      case "Funcional":
+        return funcional;
+      case "Força":
+        return forca;
+      case "Hipertrofia":
+        return hipertrofia;
+      case "Resistência":
+        return resistencia;
+      default:
+        return forca;
+    }
+  };
 
   return (
-    <Layout>
+    <Layout props={{ hasHeader: true }}>
       <div className="animate-fade-in">
         <div className="relative h-48 -mx-4 mb-5">
           <BlurImage
-            src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1000"
+            src={getWorkoutTypeImage(mockWorkout.workoutType)}
             alt="Workout"
             className="h-48"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
           <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
-            <Link
-              to="/"
+            <div
+              onClick={() => {
+                navigate(-1);
+              }}
               className="rounded-full bg-background/80 backdrop-blur-sm p-2"
             >
               <ArrowLeft className="h-5 w-5" />
-            </Link>
+            </div>
             <div className="relative">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
@@ -157,10 +191,10 @@ const WorkoutDetail = () => {
               {menuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg border border-border z-50 animate-scale-in">
                   <div className="py-1">
-                    <button className="flex items-center w-full px-4 py-2 text-sm hover:bg-accent transition-colors">
+                    <Link to={`/workout/${id}/edit`} className="flex items-center w-full px-4 py-2 text-sm hover:bg-accent transition-colors">
                       <Pencil className="h-4 w-4 mr-2" />
                       Editar treino
-                    </button>
+                    </Link>
                     <button className="flex items-center w-full px-4 py-2 text-sm hover:bg-accent transition-colors">
                       <Copy className="h-4 w-4 mr-2" />
                       Duplicar treino
@@ -177,7 +211,7 @@ const WorkoutDetail = () => {
                     <button
                       onClick={() => {
                         removeWorkout("victor", id);
-                        navigate("/");
+                        navigate(-1);
                       }}
                       className="flex items-center w-full px-4 py-2 text-sm text-destructive hover:bg-accent transition-colors"
                     >
