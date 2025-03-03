@@ -14,7 +14,7 @@ import moment from "moment";
 import { getWorkoutTypeImage } from "@/functions";
 import BlurImage from "@/components/BlurImage";
 
-const workoutTypes = ["Força", "Hipertrofia", "Resistência", "Funcional"];
+const workoutTypes = [{name:"Força",color: "bg-primary"},{name:"Hipertrofia",color: "bg-red-600"},{name:"Resistência",color: "bg-yellow-500"},{name:"Funcional",color: "bg-primary"}]
 
 const EditWorkout = () => {
   const navigate = useNavigate();
@@ -142,16 +142,16 @@ const EditWorkout = () => {
               <div className="grid grid-cols-2 gap-2 mt-1">
                 {workoutTypes.map((type) => (
                   <button
-                    key={type}
+                    key={type.name}
                     type="button"
                     className={`p-2 rounded-md border text-sm transition-all ${
-                      workoutType === type
-                        ? "bg-primary text-primary-foreground border-primary"
+                      workoutType === type.name
+                        ? `${type.color} text-primary-foreground border-primary`
                         : "bg-card border-border hover:bg-accent"
                     }`}
-                    onClick={() => setWorkoutType(type)}
+                    onClick={() => setWorkoutType(type.name)}
                   >
-                    {type}
+                    {type.name}
                   </button>
                 ))}
               </div>
