@@ -40,6 +40,8 @@ const ExercisesChart = ({ data }) => {
         options={{
           chart: {
             id: "numeros-concretos",
+            locales: [ptBr],
+            defaultLocale: 'pt-br',
           },
           xaxis: {
             categories: months,
