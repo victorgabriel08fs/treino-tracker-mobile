@@ -5,12 +5,14 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
-import { Plus, Trash2, X } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { Exercise, Workout } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { addWorkout } from "@/storage";
 import moment from "moment";
+import BlurImage from "@/components/BlurImage";
+import { getWorkoutTypeImage } from "@/functions";
 
 const workoutTypes = ["Força", "Hipertrofia", "Resistência", "Funcional"];
 
@@ -77,7 +79,7 @@ const NewWorkout = () => {
       return;
     }
     const convertedDate = moment(date).utc().toDate();
-    
+
     const newWorkout: Workout = {
       id: uuidv4(),
       name: name,
@@ -94,8 +96,26 @@ const NewWorkout = () => {
   };
 
   return (
-    <Layout>
+    <Layout props={{ hasHeader: true }}>
       <div className="animate-fade-in">
+        <div className="relative h-48 -mx-4 mb-5">
+          <BlurImage
+            src={getWorkoutTypeImage(workoutType)}
+            alt="Workout"
+            className="h-48"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+          <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
+            <div
+              onClick={() => {
+                navigate(-1);
+              }}
+              className="rounded-full bg-background/80 backdrop-blur-sm p-2"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </div>
+          </div>
+        </div>
         <header className="mb-6">
           <h1 className="text-2xl font-bold tracking-tight">Novo Treino</h1>
           <p className="text-muted-foreground">Crie seu treino personalizado</p>
@@ -124,17 +144,6 @@ const NewWorkout = () => {
             </div>
 
             <div>
-              <Label htmlFor="duration">Duração do Treino (minutos)</Label>
-              <Input
-                id="duration"
-                type="number"
-                value={duration}
-                placeholder="Ex: 30 minutos"
-                onChange={(e) => setDuration(parseInt(e.target.value))}
-              />
-            </div>
-
-            <div>
               <Label htmlFor="type">Tipo de Treino</Label>
               <div className="grid grid-cols-2 gap-2 mt-1">
                 {workoutTypes.map((type) => (
@@ -152,6 +161,17 @@ const NewWorkout = () => {
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div>
+              <Label htmlFor="duration">Duração do Treino (minutos)</Label>
+              <Input
+                id="duration"
+                type="number"
+                value={duration}
+                placeholder="Ex: 30 minutos"
+                onChange={(e) => setDuration(parseInt(e.target.value))}
+              />
             </div>
           </div>
 

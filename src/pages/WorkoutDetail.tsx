@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import ExerciseItem from "../components/ExerciseItem";
-import hipertrofia from "../../public/assets/header_images/hipertrofia.jpg";
-import forca from "../../public/assets/header_images/forca.jpg";
-import resistencia from "../../public/assets/header_images/resistencia.jpg";
-import funcional from "../../public/assets/header_images/funcional.jpg";
+import hipertrofia from "../assets/header_images/hipertrofia.jpg";
+import forca from "../assets/header_images/forca.jpg";
+import resistencia from "../assets/header_images/resistencia.jpg";
+import funcional from "../assets/header_images/funcional.jpg";
 
 import {
   ArrowLeft,
@@ -22,6 +22,7 @@ import { ptBR } from "date-fns/locale";
 import BlurImage from "../components/BlurImage";
 import { getWorkout, removeWorkout } from "@/storage";
 import { Exercise, Workout } from "@/types";
+import { getWorkoutTypeImage } from "@/functions";
 
 const WorkoutDetail = () => {
   const navigate = useNavigate();
@@ -146,20 +147,7 @@ const WorkoutDetail = () => {
     newWindow.document.close();
   };
 
-  const getWorkoutTypeImage = (workoutType: string) => {
-    switch (workoutType) {
-      case "Funcional":
-        return funcional;
-      case "Força":
-        return forca;
-      case "Hipertrofia":
-        return hipertrofia;
-      case "Resistência":
-        return resistencia;
-      default:
-        return forca;
-    }
-  };
+  
 
   return (
     <Layout props={{ hasHeader: true }}>
