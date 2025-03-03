@@ -63,7 +63,7 @@ const Index = () => {
 
         <div className="mb-4">
           <h2 className="text-xl font-semibold mb-3">Acompanhe seu progresso</h2>
-          <WorkoutCharts exercisesChartData={getWorkouts("victor", { sort: true })} />
+          <WorkoutCharts workouts={getWorkouts("victor", { sort: true })} />
         </div>
       </div>
       <AddWorkoutButton />

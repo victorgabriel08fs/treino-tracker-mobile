@@ -1,6 +1,7 @@
 import moment from "moment";
 import Chart from "react-apexcharts";
 import "moment/dist/locale/pt-br";
+import ptBr from "apexcharts/dist/locales/pt-br.json";
 
 const ExercisesChart = ({ data }) => {
   const months = [];
@@ -33,12 +34,12 @@ const ExercisesChart = ({ data }) => {
 
   return (
     <>
-      <div>ExercisesChart</div>
+      <div>Números concretos</div>
       <Chart
         type="line"
         options={{
           chart: {
-            id: "basic-bar",
+            id: "numeros-concretos",
           },
           xaxis: {
             categories: months,
@@ -63,10 +64,47 @@ const ExercisesChart = ({ data }) => {
   );
 };
 
-const WorkoutCharts = ({ exercisesChartData }) => {
+const WorkoutTypeChart = ({ data }) => {
+  const types = [];
+  const workoutsPerType = [];
+  
+  data.map((workout) => {
+    if(!types.includes(workout.workoutType)) {
+      types.push(workout.workoutType);
+      workoutsPerType.push(1);
+    } else {
+      const index = types.indexOf(workout.workoutType);
+      workoutsPerType[index] += 1;
+    }
+  });
+
   return (
     <>
-      <ExercisesChart data={exercisesChartData} />
+      <div>Distribuição de treino</div>
+      <Chart
+        type="pie"
+        options={{
+          chart: {
+            id: "tipos-de-treino",
+            toolbar: {
+              show: true,
+            },
+            locales: [ptBr],
+            defaultLocale: 'pt-br',
+          },
+          labels: types,
+        }}
+        series={workoutsPerType}
+      />
+    </>
+  );
+};
+
+const WorkoutCharts = ({ workouts }) => {
+  return (
+    <>
+      <ExercisesChart data={workouts} />
+      <WorkoutTypeChart data={workouts} />
     </>
   );
 };
