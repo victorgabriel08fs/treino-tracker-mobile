@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay } from 'date-fns';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, subDays, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -17,25 +16,26 @@ const Calendar = ({ workoutDates, onSelectDate, selectedDate }: CalendarProps) =
   const monthEnd = endOfMonth(currentMonth);
   const daysInMonth = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
-  const previousMonth = () => {
-    setCurrentMonth(date => {
-      const month = date.getMonth();
-      const year = date.getFullYear();
-      return new Date(year, month - 1, 1);
-    });
-  };
+  const startDayOfWeek = monthStart.getDay(); // 0 = Domingo, 6 = Sábado
 
-  const nextMonth = () => {
-    setCurrentMonth(date => {
-      const month = date.getMonth();
-      const year = date.getFullYear();
-      return new Date(year, month + 1, 1);
-    });
-  };
+  // Dias anteriores para preencher a primeira semana
+  const prevDays = Array.from({ length: startDayOfWeek }, (_, i) =>
+    subDays(monthStart, startDayOfWeek - i)
+  );
 
-  const hasWorkout = (date: Date) => {
-    return workoutDates.some(workoutDate => isSameDay(workoutDate, date));
-  };
+  // Completar a última semana para ter um total de múltiplo de 7
+  const totalDays = prevDays.length + daysInMonth.length;
+  const nextDays = Array.from({ length: totalDays % 7 ? 7 - (totalDays % 7) : 0 }, (_, i) =>
+    addDays(monthEnd, i + 1)
+  );
+
+  // Combinar os dias para preencher corretamente o calendário
+  const calendarDays = [...prevDays, ...daysInMonth, ...nextDays];
+
+  const previousMonth = () => setCurrentMonth(date => new Date(date.getFullYear(), date.getMonth() - 1, 1));
+  const nextMonth = () => setCurrentMonth(date => new Date(date.getFullYear(), date.getMonth() + 1, 1));
+
+  const hasWorkout = (date: Date) => workoutDates.some(workoutDate => isSameDay(workoutDate, date));
 
   return (
     <div className="bg-card rounded-xl border border-border p-4 shadow-sm mb-6 animate-fade-in">
@@ -44,16 +44,10 @@ const Calendar = ({ workoutDates, onSelectDate, selectedDate }: CalendarProps) =
           {format(currentMonth, 'MMMM yyyy', { locale: ptBR })}
         </h2>
         <div className="flex items-center space-x-2">
-          <button 
-            onClick={previousMonth}
-            className="rounded-full w-8 h-8 flex items-center justify-center hover:bg-accent"
-          >
+          <button onClick={previousMonth} className="rounded-full w-8 h-8 flex items-center justify-center hover:bg-accent">
             <ChevronLeft className="h-5 w-5" />
           </button>
-          <button 
-            onClick={nextMonth}
-            className="rounded-full w-8 h-8 flex items-center justify-center hover:bg-accent"
-          >
+          <button onClick={nextMonth} className="rounded-full w-8 h-8 flex items-center justify-center hover:bg-accent">
             <ChevronRight className="h-5 w-5" />
           </button>
         </div>
@@ -64,15 +58,18 @@ const Calendar = ({ workoutDates, onSelectDate, selectedDate }: CalendarProps) =
             {day}
           </div>
         ))}
-        {daysInMonth.map((day, i) => {
+        {calendarDays.map((day, i) => {
           const hasWorkoutOnDay = hasWorkout(day);
           const isSelected = isSameDay(day, selectedDate);
+          const isOtherMonth = day.getMonth() !== currentMonth.getMonth();
+          
           return (
             <button
               key={i}
               onClick={() => onSelectDate(day)}
               className={`h-10 rounded-full flex items-center justify-center text-sm transition-all duration-200 relative
-                ${isSelected ? 'bg-primary text-primary-foreground' : hasWorkoutOnDay ? 'font-medium' : 'hover:bg-accent'}`}
+                ${isOtherMonth ? 'text-muted' : isSelected ? 'bg-primary text-primary-foreground' : hasWorkoutOnDay ? 'font-medium' : 'hover:bg-accent'}`}
+              disabled={isOtherMonth}
             >
               {format(day, 'd')}
               {hasWorkoutOnDay && (
