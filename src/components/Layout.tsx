@@ -19,7 +19,7 @@ const Layout = ({ children, props }: LayoutProps) => {
     { icon: Home, path: '/', label: 'Home' },
     { icon: Calendar, path: '/history', label: 'Histórico' },
     { icon: PlusCircle, path: '/new', label: 'Adicionar' },
-    { icon: User, path: '/profile', label: 'Perfil' },
+    // { icon: User, path: '/profile', label: 'Perfil' },
   ];
 
   return (
