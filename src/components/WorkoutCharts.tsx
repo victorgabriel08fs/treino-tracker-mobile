@@ -21,9 +21,18 @@ const ExercisesChart = ({ data }) => {
         workoutDate.month() === month.month() &&
         workoutDate.year() === month.year()
       ) {
-        if (workout.duration) time += workout.duration;
-        numberOfWorkouts += 1;
-        numberOfExercises += workout.exercises.length;
+        if (
+          workout.exercises &&
+          workout.exercises.filter((exercise) => exercise.isCompleted).length >
+            0
+        ) {
+          if (workout.duration) time += workout.duration;
+          numberOfWorkouts += 1;
+          if (workout.exercises)
+            numberOfExercises += workout.exercises.filter(
+              (exercise) => exercise.isCompleted
+            ).length;
+        }
       }
     });
 
@@ -41,7 +50,20 @@ const ExercisesChart = ({ data }) => {
           chart: {
             id: "numeros-concretos",
             locales: [ptBr],
-            defaultLocale: 'pt-br',
+            defaultLocale: "pt-br",
+            toolbar: {
+              show: true,
+              offsetX: 0,
+              offsetY: 0,
+              tools: {
+                download: true,
+                zoomin: false,
+                reset: false,
+                zoom: false,
+                pan: false,
+                zoomout: false,
+              },
+            },
           },
           xaxis: {
             categories: months,
@@ -51,10 +73,6 @@ const ExercisesChart = ({ data }) => {
           {
             name: "Número de exercícios",
             data: exercises,
-          },
-          {
-            name: "Tempo de treino",
-            data: workoutTime,
           },
           {
             name: "Número de treinos",
@@ -69,9 +87,9 @@ const ExercisesChart = ({ data }) => {
 const WorkoutTypeChart = ({ data }) => {
   const types = [];
   const workoutsPerType = [];
-  
+
   data.map((workout) => {
-    if(!types.includes(workout.workoutType)) {
+    if (!types.includes(workout.workoutType)) {
       types.push(workout.workoutType);
       workoutsPerType.push(1);
     } else {
@@ -92,7 +110,7 @@ const WorkoutTypeChart = ({ data }) => {
               show: true,
             },
             locales: [ptBr],
-            defaultLocale: 'pt-br',
+            defaultLocale: "pt-br",
           },
           labels: types,
         }}
@@ -104,10 +122,10 @@ const WorkoutTypeChart = ({ data }) => {
 
 const WorkoutCharts = ({ workouts }) => {
   return (
-    <>
+    <div className="flex flex-col gap-10">
       <ExercisesChart data={workouts} />
       <WorkoutTypeChart data={workouts} />
-    </>
+    </div>
   );
 };
 
