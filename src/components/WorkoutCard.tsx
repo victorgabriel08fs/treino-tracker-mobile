@@ -11,6 +11,7 @@ interface WorkoutCardProps {
   id: string;
   name: string;
   date: Date;
+  isToday: boolean;
   exerciseCount: number;
   workoutType: string;
 }
@@ -19,7 +20,7 @@ interface WorkoutIconProps {
   type: string
 }
 
-const WorkoutCard = ({ id, name, date, exerciseCount, workoutType }: WorkoutCardProps) => {
+const WorkoutCard = ({ id, name, date, exerciseCount, workoutType, isToday }: WorkoutCardProps) => {
   const WorkoutIcon = ({ type }: WorkoutIconProps) => {
     switch (type) {
       case "Força":
@@ -41,7 +42,7 @@ const WorkoutCard = ({ id, name, date, exerciseCount, workoutType }: WorkoutCard
       to={`/workout/${id}`}
       className="block w-full mb-4 animate-scale-in"
     >
-      <div className="rounded-xl p-4 border border-border bg-card hover:bg-accent transition-all duration-200 shadow-sm hover:shadow">
+      <div className={`rounded-xl p-4 border border-border ${isToday ? "bg-gray-100 animate-pulse" : "bg-card duration-200"} hover:bg-accent transition-all shadow-sm hover:shadow`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">

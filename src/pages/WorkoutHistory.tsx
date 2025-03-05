@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import WorkoutCard from "../components/WorkoutCard";
+import { isSameDay } from 'date-fns';
 import { CalendarDays, Clock, Filter } from "lucide-react";
 import { getWorkouts } from "@/storage";
 
@@ -96,6 +97,7 @@ const WorkoutHistory = () => {
                       id={workout.id}
                       name={workout.name}
                       date={workout.date}
+                      isToday={isSameDay(workout.date, new Date())}
                       exerciseCount={workout.exerciseCount}
                       workoutType={workout.workoutType}
                     />
