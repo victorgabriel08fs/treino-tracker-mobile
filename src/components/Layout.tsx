@@ -27,7 +27,7 @@ const Layout = ({ children, props }: LayoutProps) => {
       <main className={`flex-1 px-4 ${props?.hasHeader ? '': 'py-6'} pb-20 overflow-y-auto thin-scrollbar`}>
         {children}
       </main>
-      <nav className="fixed bottom-0 left-0 right-0 z-10">
+      <nav className="fixed bottom-0 left-0 right-0 z-50">
         <div className="max-w-lg mx-auto">
           <div className="glass-card rounded-t-2xl shadow-lg px-4 py-3 flex justify-around items-center">
             {navItems.map((item) => (
