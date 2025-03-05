@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
+import { toast } from "sonner";
+
 import ExerciseItem from "../components/ExerciseItem";
 import hipertrofia from "../assets/header_images/hipertrofia.jpg";
 import forca from "../assets/header_images/forca.jpg";
@@ -36,13 +38,20 @@ const WorkoutDetail = () => {
   const toggleCompletion = (exerciseId: string) => {
     const updated = changeExerciseStatus("victor", id, exerciseId);
     if (!updated) return;
-    setExercises((prevExercises) =>
-      prevExercises.map((exercise) =>
+    setExercises((prevExercises) => {
+      const newExercises = prevExercises.map((exercise) =>
         exercise.id === exerciseId
           ? { ...exercise, isCompleted: !exercise.isCompleted }
           : exercise
-      )
-    );
+      );
+
+      // Agora verifica se todos foram concluídos após a atualização do estado
+      if (newExercises.every((ex) => ex.isCompleted)) {
+        toast.success("Parabéns, todos os exercícios foram concluídos!");
+      }
+
+      return newExercises;
+    });
   };
 
   const completedExercises = exercises.filter((ex) => ex.isCompleted).length;
