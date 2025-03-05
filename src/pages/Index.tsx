@@ -24,7 +24,6 @@ const Index = () => {
       <div className="animate-fade-in">
         <header className="mb-6">
           <h1 className="text-3xl font-bold tracking-tight">Meus Treinos</h1>
-          <p className="text-muted-foreground">Acompanhe seu progresso</p>
         </header>
 
         <Calendar
@@ -34,7 +33,7 @@ const Index = () => {
         />
 
         <div className="mb-4">
-          <h2 className="text-xl font-semibold mb-3">Treinos de hoje</h2>
+          <h2 className="text-xl font-semibold mb-3">Treinos do dia</h2>
 
           {filteredWorkouts.length > 0 ? (
             filteredWorkouts.map((workout) => (
@@ -62,7 +61,7 @@ const Index = () => {
         </div>
 
         <div className="mb-4">
-          <h2 className="text-xl font-semibold mb-3">Acompanhe seu progresso</h2>
+          <h2 className="text-xl font-semibold mb-3">Algumas estatísticas</h2>
           <WorkoutCharts workouts={getWorkouts("victor", { sort: true })} />
         </div>
       </div>
