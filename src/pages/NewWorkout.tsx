@@ -9,15 +9,22 @@ import { ArrowLeft, Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { Exercise, Workout } from "@/types";
 import { v4 as uuidv4 } from "uuid";
-import { addWorkout } from "@/storage";
+import { addWorkout, getSelectedUser } from "@/storage";
 import moment from "moment";
 import BlurImage from "@/components/BlurImage";
 import { getWorkoutTypeImage } from "@/functions";
 
-const workoutTypes = [{name:"Força",color: "bg-primary"},{name:"Hipertrofia",color: "bg-red-600"},{name:"Resistência",color: "bg-yellow-500"},{name:"Funcional",color: "bg-primary"}]
+const workoutTypes = [
+  { name: "Força", color: "bg-primary" },
+  { name: "Hipertrofia", color: "bg-red-600" },
+  { name: "Resistência", color: "bg-yellow-500" },
+  { name: "Funcional", color: "bg-primary" },
+];
 
 const NewWorkout = () => {
   const navigate = useNavigate();
+  const [selectedUser, setSelectedUser] = useState(getSelectedUser());
+
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState(0);
@@ -89,7 +96,7 @@ const NewWorkout = () => {
       workoutType: workoutType,
       exercises: exercises,
     };
-    addWorkout("victor", newWorkout);
+    addWorkout(selectedUser.username, newWorkout);
 
     toast.success("Treino salvo com sucesso!");
     navigate(-1);
@@ -146,7 +153,7 @@ const NewWorkout = () => {
             <div>
               <Label htmlFor="type">Tipo de Treino</Label>
               <div className="grid grid-cols-2 gap-2 mt-1">
-              {workoutTypes.map((type) => (
+                {workoutTypes.map((type) => (
                   <button
                     key={type.name}
                     type="button"

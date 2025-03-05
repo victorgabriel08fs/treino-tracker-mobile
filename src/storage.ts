@@ -32,7 +32,7 @@ export const addWorkout = (username: string, newWorkout: Workout) => {
 // Atualiza um treino existente
 export const updateWorkout = (username: string, updatedWorkout: Workout) => {
   const workouts = getWorkouts(username);
-  
+
   const updatedUsers = getStoredData().map((user) => {
     if (user.username === username) {
       const updatedWorkouts = workouts.map((workout) =>
@@ -46,7 +46,11 @@ export const updateWorkout = (username: string, updatedWorkout: Workout) => {
   saveToLocalStorage(updatedUsers);
 };
 
-export const changeExerciseStatus = (username: string, workoutId: string, exerciseId: string)=>{
+export const changeExerciseStatus = (
+  username: string,
+  workoutId: string,
+  exerciseId: string
+) => {
   const users = getStoredData();
   const user = users.find((user) => user.username === username);
   if (!user) return;
@@ -71,7 +75,7 @@ export const changeExerciseStatus = (username: string, workoutId: string, exerci
   saveToLocalStorage(updatedUsers);
 
   return true;
-}
+};
 
 export const getWorkouts = (username: string, options?: any): Workout[] => {
   const users = getStoredData();
@@ -106,3 +110,46 @@ export const removeWorkout = (username: string, workoutId: string) => {
 
   saveToLocalStorage(updatedUsers);
 };
+
+export const getUser = (username: string) => {
+  const users = getStoredData();
+  return users.find((user) => user.username === username);
+};
+
+export const getUsers = () => getStoredData();
+
+export const setSelectedUser = (username: string) => {
+  localStorage.setItem("selectedUser", username);
+};
+
+export const getSelectedUser = () => {
+  const users = getStoredData();
+  const username = localStorage.getItem("selectedUser");
+  if(!username) return users[0];
+  return users.find((user) => user.username === username);
+};
+
+export const createUser = (user: User) => {
+  const users = getStoredData();
+  if (users.find((u) => u.email === user.email)) return;
+  users.push(user);
+  saveToLocalStorage(users);
+  setSelectedUser(user.username);
+  return user;
+};
+
+export const exportUserData = () => {
+  const selectedUser = getSelectedUser();
+  const workouts = getWorkouts(selectedUser.username);
+
+  const data = `data:text/json;charset=utf-8,${encodeURIComponent(
+    JSON.stringify({ username: selectedUser.username, workouts }, null, 2)
+  )}`;
+
+  const link = document.createElement("a");
+  link.href = data;
+  link.download = "workouts.json";
+  link.click();
+
+  return true;
+}

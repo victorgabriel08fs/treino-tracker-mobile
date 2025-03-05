@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import WorkoutCard from "../components/WorkoutCard";
-import { isSameDay } from 'date-fns';
+import { isSameDay } from "date-fns";
 import { CalendarDays, Clock, Filter } from "lucide-react";
-import { getWorkouts } from "@/storage";
+import { getSelectedUser, getWorkouts } from "@/storage";
 
 const WorkoutHistory = () => {
-  const [mockWorkouts, setMockWorkouts] = useState(getWorkouts("victor", { sort: true }));
+  const [mockWorkouts, setMockWorkouts] = useState(
+    getWorkouts(getSelectedUser().username, { sort: true })
+  );
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     type: "all",
@@ -21,17 +23,18 @@ const WorkoutHistory = () => {
   const groupedWorkouts = filteredWorkouts.reduce((acc, workout) => {
     // Convertendo a data para UTC para evitar problemas de fuso horário
     const date = new Date(workout.date);
-    
-    const monthYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getUTCFullYear()}`;
-  
+
+    const monthYear = `${date.toLocaleString("default", {
+      month: "long",
+    })} ${date.getUTCFullYear()}`;
+
     if (!acc[monthYear]) {
       acc[monthYear] = [];
     }
     acc[monthYear].push(workout);
-  
+
     return acc;
   }, {});
-  
 
   return (
     <Layout>
@@ -110,7 +113,9 @@ const WorkoutHistory = () => {
               <div className="rounded-full bg-accent w-14 h-14 flex items-center justify-center mb-3">
                 <Clock className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-medium mb-1">Nenhum treino encontrado</h3>
+              <h3 className="text-lg font-medium mb-1">
+                Nenhum treino encontrado
+              </h3>
               <p className="text-muted-foreground text-sm max-w-xs">
                 Não encontramos nenhum treino com os filtros selecionados.
               </p>

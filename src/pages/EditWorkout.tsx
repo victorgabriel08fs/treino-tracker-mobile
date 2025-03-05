@@ -9,19 +9,31 @@ import { ArrowLeft, Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { Exercise, Workout } from "@/types";
 import { v4 as uuidv4 } from "uuid";
-import { addWorkout, getWorkout, updateWorkout } from "@/storage";
+import {
+  addWorkout,
+  getSelectedUser,
+  getWorkout,
+  updateWorkout,
+} from "@/storage";
 import moment from "moment";
 import { getWorkoutTypeImage } from "@/functions";
 import BlurImage from "@/components/BlurImage";
 
-const workoutTypes = [{name:"Força",color: "bg-primary"},{name:"Hipertrofia",color: "bg-red-600"},{name:"Resistência",color: "bg-yellow-500"},{name:"Funcional",color: "bg-primary"}]
+const workoutTypes = [
+  { name: "Força", color: "bg-primary" },
+  { name: "Hipertrofia", color: "bg-red-600" },
+  { name: "Resistência", color: "bg-yellow-500" },
+  { name: "Funcional", color: "bg-primary" },
+];
 
 const EditWorkout = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-    const [mockWorkout, setMockWorkout] = useState<Workout>(
-      getWorkout("victor", id)
-    );
+  const [selectedUser, setSelectedUser] = useState(getSelectedUser());
+  const [mockWorkout, setMockWorkout] = useState<Workout>(
+    getWorkout(selectedUser.username, id)
+  );
+
   const [name, setName] = useState(mockWorkout.name);
   const [date, setDate] = useState(mockWorkout.date);
   const [duration, setDuration] = useState(mockWorkout.duration);
@@ -74,7 +86,7 @@ const EditWorkout = () => {
       return;
     }
     const convertedDate = moment(date).utc().toDate();
-    
+
     const updatedWorkout: Workout = {
       id: id,
       name: name,
@@ -84,7 +96,7 @@ const EditWorkout = () => {
       workoutType: workoutType,
       exercises: exercises,
     };
-    updateWorkout("victor", updatedWorkout);
+    updateWorkout(selectedUser.username, updatedWorkout);
 
     toast.success("Treino salvo com sucesso!");
     navigate(-1);
@@ -112,7 +124,9 @@ const EditWorkout = () => {
           </div>
         </div>
         <header className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight">Treino {mockWorkout.name}</h1>
+          <h1 className="text-2xl font-bold tracking-tight">
+            Treino {mockWorkout.name}
+          </h1>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -167,8 +181,6 @@ const EditWorkout = () => {
                 onChange={(e) => setDuration(parseInt(e.target.value))}
               />
             </div>
-
-            
           </div>
 
           <div>

@@ -22,21 +22,23 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import BlurImage from "../components/BlurImage";
-import { changeExerciseStatus, getWorkout, removeWorkout } from "@/storage";
+import { changeExerciseStatus, getSelectedUser, getWorkout, removeWorkout } from "@/storage";
 import { Exercise, Workout } from "@/types";
 import { getWorkoutTypeImage } from "@/functions";
 
 const WorkoutDetail = () => {
+  const [selectedUser, setSelectedUser] = useState(getSelectedUser());
+
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [mockWorkout, setMockWorkout] = useState<Workout>(
-    getWorkout("victor", id)
+    getWorkout(selectedUser.username, id)
   );
   const [exercises, setExercises] = useState<Exercise[]>(mockWorkout.exercises);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleCompletion = (exerciseId: string) => {
-    const updated = changeExerciseStatus("victor", id, exerciseId);
+    const updated = changeExerciseStatus(selectedUser.username, id, exerciseId);
     if (!updated) return;
     setExercises((prevExercises) => {
       const newExercises = prevExercises.map((exercise) =>
@@ -210,7 +212,7 @@ const WorkoutDetail = () => {
                     </button>
                     <button
                       onClick={() => {
-                        removeWorkout("victor", id);
+                        removeWorkout(selectedUser.username, id);
                         navigate(-1);
                       }}
                       className="flex items-center w-full px-4 py-2 text-sm text-destructive hover:bg-accent transition-colors"

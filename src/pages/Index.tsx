@@ -5,10 +5,12 @@ import WorkoutCharts from "../components/WorkoutCharts";
 import Calendar from "../components/Calendar";
 import AddWorkoutButton from "../components/AddWorkoutButton";
 import { Dumbbell } from "lucide-react";
-import { getWorkouts } from "@/storage";
+import { getSelectedUser, getWorkouts } from "@/storage";
 
 const Index = () => {
-  const [mockWorkouts, setMockWorkouts] = useState(getWorkouts("victor"));
+  const [selectedUser, setSelectedUser] = useState(getSelectedUser());
+
+  const [mockWorkouts, setMockWorkouts] = useState(getWorkouts(selectedUser.username));
   const [selectedDate, setSelectedDate] = useState(new Date());
   const workoutDates = mockWorkouts.map((workout) => workout.date);
 
@@ -42,6 +44,7 @@ const Index = () => {
                 id={workout.id}
                 name={workout.name}
                 date={workout.date}
+                isToday={false}
                 exerciseCount={workout.exerciseCount}
                 workoutType={workout.workoutType}
               />
@@ -62,7 +65,7 @@ const Index = () => {
 
         <div className="mb-4">
           <h2 className="text-xl font-semibold mb-3">Algumas estatísticas</h2>
-          <WorkoutCharts workouts={getWorkouts("victor", { sort: true })} />
+          <WorkoutCharts workouts={getWorkouts(selectedUser.username, { sort: true })} />
         </div>
       </div>
       <AddWorkoutButton />
