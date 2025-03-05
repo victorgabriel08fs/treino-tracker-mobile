@@ -42,7 +42,7 @@ const ExercisesChart = ({ data }) => {
   }
 
   return (
-    <>
+    <div>
       <div>Números concretos</div>
       <Chart
         type="line"
@@ -80,7 +80,7 @@ const ExercisesChart = ({ data }) => {
           },
         ]}
       />
-    </>
+    </div>
   );
 };
 
@@ -99,7 +99,7 @@ const WorkoutTypeChart = ({ data }) => {
   });
 
   return (
-    <>
+    <div>
       <div>Distribuição de treino</div>
       <Chart
         type="pie"
@@ -116,7 +116,7 @@ const WorkoutTypeChart = ({ data }) => {
         }}
         series={workoutsPerType}
       />
-    </>
+    </div>
   );
 };
 
