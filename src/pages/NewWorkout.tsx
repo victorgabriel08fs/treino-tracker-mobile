@@ -21,7 +21,7 @@ const NewWorkout = () => {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState(0);
-  const [workoutType, setWorkoutType] = useState(workoutTypes[0]);
+  const [workoutType, setWorkoutType] = useState(workoutTypes[0].name);
   const [exercises, setExercises] = useState<Exercise[]>([
     {
       id: uuidv4(),
