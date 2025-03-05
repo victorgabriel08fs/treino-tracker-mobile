@@ -18,18 +18,15 @@ const Calendar = ({ workoutDates, onSelectDate, selectedDate }: CalendarProps) =
 
   const startDayOfWeek = monthStart.getDay(); // 0 = Domingo, 6 = Sábado
 
-  // Dias anteriores para preencher a primeira semana
   const prevDays = Array.from({ length: startDayOfWeek }, (_, i) =>
     subDays(monthStart, startDayOfWeek - i)
   );
 
-  // Completar a última semana para ter um total de múltiplo de 7
   const totalDays = prevDays.length + daysInMonth.length;
   const nextDays = Array.from({ length: totalDays % 7 ? 7 - (totalDays % 7) : 0 }, (_, i) =>
     addDays(monthEnd, i + 1)
   );
 
-  // Combinar os dias para preencher corretamente o calendário
   const calendarDays = [...prevDays, ...daysInMonth, ...nextDays];
 
   const previousMonth = () => setCurrentMonth(date => new Date(date.getFullYear(), date.getMonth() - 1, 1));
@@ -62,18 +59,23 @@ const Calendar = ({ workoutDates, onSelectDate, selectedDate }: CalendarProps) =
           const hasWorkoutOnDay = hasWorkout(day);
           const isSelected = isSameDay(day, selectedDate);
           const isOtherMonth = day.getMonth() !== currentMonth.getMonth();
+          const isToday = isSameDay(day, new Date());
           
           return (
             <button
               key={i}
               onClick={() => onSelectDate(day)}
               className={`h-10 rounded-full flex items-center justify-center text-sm transition-all duration-200 relative
-                ${isOtherMonth ? 'text-muted' : isSelected ? 'bg-primary text-primary-foreground' : hasWorkoutOnDay ? 'font-medium' : 'hover:bg-accent'}`}
+                ${isOtherMonth ? 'text-muted' 
+                : isSelected ? 'bg-primary text-primary-foreground' 
+                : isToday ? 'bg-green-300 text-black font-bold' 
+                : hasWorkoutOnDay ? 'font-medium' 
+                : 'hover:bg-accent'}`}
               disabled={isOtherMonth}
             >
               {format(day, 'd')}
               {hasWorkoutOnDay && (
-                <span className={`absolute bottom-1.5 w-1 h-1 rounded-full ${isSelected ? 'bg-white':'bg-primary'}`} />
+                <span className={`absolute bottom-1.5 w-1 h-1 rounded-full ${isSelected ? 'bg-white' : 'bg-primary'}`} />
               )}
             </button>
           );
