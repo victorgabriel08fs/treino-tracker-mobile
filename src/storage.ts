@@ -140,10 +140,8 @@ export const createUser = (user: User) => {
 
 export const exportUserData = () => {
   const selectedUser = getSelectedUser();
-  const workouts = getWorkouts(selectedUser.username);
-
   const data = `data:text/json;charset=utf-8,${encodeURIComponent(
-    JSON.stringify({ username: selectedUser.username, workouts }, null, 2)
+    JSON.stringify({ selectedUser }, null, 2)
   )}`;
 
   const link = document.createElement("a");
@@ -152,4 +150,4 @@ export const exportUserData = () => {
   link.click();
 
   return true;
-}
+};
