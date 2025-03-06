@@ -15,13 +15,10 @@ export const saveToLocalStorage = (users: User[]) => {
 };
 
 // Adiciona um novo treino para um usuário
-export const addWorkout = (username: string, newWorkout: Workout) => {
+export const addWorkout = (userId: string, newWorkout: Workout) => {
   const users = getStoredData();
-  if (!users.find((user) => user.username === username)) {
-    users.push({ id: uuidv4(), username, name: "", email: "", workouts: [] });
-  }
   const updatedUsers = users.map((user) =>
-    user.username === username
+    user.id === userId
       ? { ...user, workouts: [...user.workouts, newWorkout] }
       : user
   );
@@ -30,11 +27,11 @@ export const addWorkout = (username: string, newWorkout: Workout) => {
 };
 
 // Atualiza um treino existente
-export const updateWorkout = (username: string, updatedWorkout: Workout) => {
-  const workouts = getWorkouts(username);
+export const updateWorkout = (userId: string, updatedWorkout: Workout) => {
+  const workouts = getWorkouts(userId);
 
   const updatedUsers = getStoredData().map((user) => {
-    if (user.username === username) {
+    if (user.id === userId) {
       const updatedWorkouts = workouts.map((workout) =>
         workout.id === updatedWorkout.id ? updatedWorkout : workout
       );
@@ -47,12 +44,12 @@ export const updateWorkout = (username: string, updatedWorkout: Workout) => {
 };
 
 export const changeExerciseStatus = (
-  username: string,
+  userId: string,
   workoutId: string,
   exerciseId: string
 ) => {
   const users = getStoredData();
-  const user = users.find((user) => user.username === username);
+  const user = users.find((user) => user.id === userId);
   if (!user) return;
 
   const updatedWorkouts = user.workouts.map((workout) => {
@@ -69,7 +66,7 @@ export const changeExerciseStatus = (
   });
 
   const updatedUsers = users.map((user) =>
-    user.username === username ? { ...user, workouts: updatedWorkouts } : user
+    user.id === userId ? { ...user, workouts: updatedWorkouts } : user
   );
 
   saveToLocalStorage(updatedUsers);
@@ -77,9 +74,9 @@ export const changeExerciseStatus = (
   return true;
 };
 
-export const getWorkouts = (username: string, options?: any): Workout[] => {
+export const getWorkouts = (userId: string, options?: any): Workout[] => {
   const users = getStoredData();
-  const user = users.find((user) => user.username === username);
+  const user = users.find((user) => user.id === userId);
   if (!user) return [];
   const workouts = user.workouts.map((workout) => ({
     ...workout,
@@ -96,14 +93,14 @@ export const getWorkouts = (username: string, options?: any): Workout[] => {
   return workouts;
 };
 
-export const getWorkout = (username: string, workoutId: string) =>
-  getWorkouts(username).find((workout) => workout.id === workoutId);
+export const getWorkout = (userId: string, workoutId: string) =>
+  getWorkouts(userId).find((workout) => workout.id === workoutId);
 
 // Remove um treino por ID
-export const removeWorkout = (username: string, workoutId: string) => {
+export const removeWorkout = (userId: string, workoutId: string) => {
   const users = getStoredData();
   const updatedUsers = users.map((user) =>
-    user.username === username
+    user.id === userId
       ? { ...user, workouts: user.workouts.filter((w) => w.id !== workoutId) }
       : user
   );
@@ -111,30 +108,45 @@ export const removeWorkout = (username: string, workoutId: string) => {
   saveToLocalStorage(updatedUsers);
 };
 
-export const getUser = (username: string) => {
+export const getUser = (id: string) => {
   const users = getStoredData();
-  return users.find((user) => user.username === username);
+  return users.find((user) => user.id === id);
 };
 
 export const getUsers = () => getStoredData();
 
-export const setSelectedUser = (username: string) => {
-  localStorage.setItem("selectedUser", username);
+export const setSelectedUser = (id: string) => {
+  localStorage.setItem("selectedUser", id);
 };
 
 export const getSelectedUser = () => {
   const users = getStoredData();
-  const username = localStorage.getItem("selectedUser");
-  if(!username) return users[0];
-  return users.find((user) => user.username === username);
+  const id = localStorage.getItem("selectedUser");
+  if (!id) return users[0];
+  return users.find((user) => user.id === id);
+};
+
+export const updateUser = (user: User) => {
+  const users = getStoredData();
+  console.log(user);
+  const updatedUsers = users.map((u) => (u.id === user.id ? user : u));
+  saveToLocalStorage(updatedUsers);
+  return user;
 };
 
 export const createUser = (user: User) => {
   const users = getStoredData();
+  while(users.find((u)=>u.id === user.id)) user.id = uuidv4();
   if (users.find((u) => u.email === user.email)) return;
+  let slug = user.name.toLowerCase().replace(/ /g, "-");
+  slug = slug.replace(/[^\w-]+/g, "");
+  const username = slug;
+  while (users.find((u) => u.username === slug))
+    slug = username + "-" + Math.random().toString(36).substr(2, 3);
+  user.username = slug;
   users.push(user);
   saveToLocalStorage(users);
-  setSelectedUser(user.username);
+  setSelectedUser(user.id);
   return user;
 };
 
@@ -148,6 +160,34 @@ export const exportUserData = () => {
   link.href = data;
   link.download = "workouts.json";
   link.click();
+
+  return true;
+};
+
+export const importUserData = (data: string) => {
+  const parsedData = JSON.parse(data);
+
+  let users = getStoredData();
+  if (!users.find((user) => user.email === parsedData.email)) {
+    users.push({
+      id: parsedData.id,
+      username: parsedData.username,
+      name: "",
+      email: "",
+      workouts: parsedData.workouts,
+    });
+  } else {
+    users = users.map((user) => {
+      if (
+        user.email === parsedData.email &&
+        confirm(`Já existe um usuário com email ${user.email}. Deseja sobreescrever?`)
+      )
+        return parsedData;
+      else return user;
+    });
+  }
+
+  saveToLocalStorage(users);
 
   return true;
 };

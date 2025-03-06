@@ -10,7 +10,7 @@ import { getSelectedUser, getWorkouts } from "@/storage";
 const Index = () => {
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
 
-  const [mockWorkouts, setMockWorkouts] = useState(getWorkouts(selectedUser.username));
+  const [mockWorkouts, setMockWorkouts] = useState(getWorkouts(selectedUser.id));
   const [selectedDate, setSelectedDate] = useState(new Date());
   const workoutDates = mockWorkouts.map((workout) => workout.date);
 
@@ -65,7 +65,7 @@ const Index = () => {
 
         <div className="mb-4">
           <h2 className="text-xl font-semibold mb-3">Algumas estatísticas</h2>
-          <WorkoutCharts workouts={getWorkouts(selectedUser.username, { sort: true })} />
+          <WorkoutCharts workouts={getWorkouts(selectedUser.id, { sort: true })} />
         </div>
       </div>
       <AddWorkoutButton />

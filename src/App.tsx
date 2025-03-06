@@ -21,7 +21,7 @@ const App = () => {
   const [key, setKey] = useState(0);
   useEffect(() => {
     if (!getSelectedUser()) {
-      if (getUsers().length > 0) setSelectedUser(getUsers()[0].username);
+      if (getUsers().length > 0) setSelectedUser(getUsers()[0].id);
     }
   }, []);
   return (

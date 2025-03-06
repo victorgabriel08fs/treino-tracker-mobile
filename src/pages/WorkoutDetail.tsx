@@ -32,13 +32,13 @@ const WorkoutDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [mockWorkout, setMockWorkout] = useState<Workout>(
-    getWorkout(selectedUser.username, id)
+    getWorkout(selectedUser.id, id)
   );
   const [exercises, setExercises] = useState<Exercise[]>(mockWorkout.exercises);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleCompletion = (exerciseId: string) => {
-    const updated = changeExerciseStatus(selectedUser.username, id, exerciseId);
+    const updated = changeExerciseStatus(selectedUser.id, id, exerciseId);
     if (!updated) return;
     setExercises((prevExercises) => {
       const newExercises = prevExercises.map((exercise) =>
@@ -212,7 +212,7 @@ const WorkoutDetail = () => {
                     </button>
                     <button
                       onClick={() => {
-                        removeWorkout(selectedUser.username, id);
+                        removeWorkout(selectedUser.id, id);
                         navigate(-1);
                       }}
                       className="flex items-center w-full px-4 py-2 text-sm text-destructive hover:bg-accent transition-colors"

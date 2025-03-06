@@ -96,7 +96,7 @@ const NewWorkout = () => {
       workoutType: workoutType,
       exercises: exercises,
     };
-    addWorkout(selectedUser.username, newWorkout);
+    addWorkout(selectedUser.id, newWorkout);
 
     toast.success("Treino salvo com sucesso!");
     navigate(-1);

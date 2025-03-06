@@ -31,7 +31,7 @@ const EditWorkout = () => {
   const { id } = useParams<{ id: string }>();
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
   const [mockWorkout, setMockWorkout] = useState<Workout>(
-    getWorkout(selectedUser.username, id)
+    getWorkout(selectedUser.id, id)
   );
 
   const [name, setName] = useState(mockWorkout.name);
@@ -96,7 +96,7 @@ const EditWorkout = () => {
       workoutType: workoutType,
       exercises: exercises,
     };
-    updateWorkout(selectedUser.username, updatedWorkout);
+    updateWorkout(selectedUser.id, updatedWorkout);
 
     toast.success("Treino salvo com sucesso!");
     navigate(-1);

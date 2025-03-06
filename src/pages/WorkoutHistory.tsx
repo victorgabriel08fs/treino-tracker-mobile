@@ -7,7 +7,7 @@ import { getSelectedUser, getWorkouts } from "@/storage";
 
 const WorkoutHistory = () => {
   const [mockWorkouts, setMockWorkouts] = useState(
-    getWorkouts(getSelectedUser().username, { sort: true })
+    getWorkouts(getSelectedUser().id, { sort: true })
   );
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState({

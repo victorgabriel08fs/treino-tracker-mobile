@@ -42,7 +42,7 @@ const CreateUser = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name">Nome do Treino</Label>
+              <Label htmlFor="name">Nome</Label>
               <Input
                 id="name"
                 value={name}
