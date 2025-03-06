@@ -11,6 +11,7 @@ import { Exercise, Workout } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import {
   addWorkout,
+  exerciseAverage,
   getSelectedUser,
   getWorkout,
   updateWorkout,
@@ -40,16 +41,16 @@ const EditWorkout = () => {
   const [workoutType, setWorkoutType] = useState(mockWorkout.workoutType);
   const [exercises, setExercises] = useState<Exercise[]>(mockWorkout.exercises);
   const [notes, setNotes] = useState(mockWorkout.notes);
-
+const averageExerciseData = exerciseAverage();
   const addExercise = () => {
     setExercises([
       ...exercises,
       {
         id: Math.random().toString(36).substr(2, 9),
         name: "",
-        sets: 3,
-        reps: 12,
-        weight: 0,
+        sets: averageExerciseData.setsAverage || 3,
+        reps: averageExerciseData.repAverage || 12,
+        weight: averageExerciseData.weightAverage || 0,
         isCompleted: false,
       },
     ]);

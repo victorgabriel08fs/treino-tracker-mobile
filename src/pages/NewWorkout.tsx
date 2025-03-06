@@ -9,7 +9,7 @@ import { ArrowLeft, Plus, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { Exercise, Workout } from "@/types";
 import { v4 as uuidv4 } from "uuid";
-import { addWorkout, getSelectedUser } from "@/storage";
+import { addWorkout, exerciseAverage, getSelectedUser } from "@/storage";
 import moment from "moment";
 import BlurImage from "@/components/BlurImage";
 import { getWorkoutTypeImage } from "@/functions";
@@ -29,13 +29,15 @@ const NewWorkout = () => {
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState(0);
   const [workoutType, setWorkoutType] = useState(workoutTypes[0].name);
+  const averageExerciseData = exerciseAverage();
+  console.log(averageExerciseData);
   const [exercises, setExercises] = useState<Exercise[]>([
     {
       id: uuidv4(),
       name: "",
-      sets: 3,
-      reps: 12,
-      weight: 0,
+      sets: averageExerciseData.setsAverage || 3,
+      reps: averageExerciseData.repAverage || 12,
+      weight: averageExerciseData.weightAverage || 0,
       isCompleted: false,
     },
   ]);
@@ -47,9 +49,9 @@ const NewWorkout = () => {
       {
         id: Math.random().toString(36).substr(2, 9),
         name: "",
-        sets: 3,
-        reps: 12,
-        weight: 0,
+        sets: averageExerciseData.setsAverage || 3,
+        reps: averageExerciseData.repAverage || 12,
+        weight: averageExerciseData.weightAverage || 0,
         isCompleted: false,
       },
     ]);

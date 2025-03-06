@@ -136,7 +136,7 @@ export const updateUser = (user: User) => {
 
 export const createUser = (user: User) => {
   const users = getStoredData();
-  while(users.find((u)=>u.id === user.id)) user.id = uuidv4();
+  while (users.find((u) => u.id === user.id)) user.id = uuidv4();
   if (users.find((u) => u.email === user.email)) return;
   let slug = user.name.toLowerCase().replace(/ /g, "-");
   slug = slug.replace(/[^\w-]+/g, "");
@@ -180,7 +180,9 @@ export const importUserData = (data: string) => {
     users = users.map((user) => {
       if (
         user.email === parsedData.email &&
-        confirm(`Já existe um usuário com email ${user.email}. Deseja sobreescrever?`)
+        confirm(
+          `Já existe um usuário com email ${user.email}. Deseja sobreescrever?`
+        )
       )
         return parsedData;
       else return user;
@@ -190,4 +192,37 @@ export const importUserData = (data: string) => {
   saveToLocalStorage(users);
 
   return true;
+};
+
+export const exerciseAverage = () => {
+  const selectedUser = getSelectedUser();
+  const workouts = getWorkouts(selectedUser.id);
+
+  const getMostFrequent = (arr) => {
+    const freqMap = arr.reduce((acc, val) => {
+      acc[val] = (acc[val] || 0) + 1;
+      return acc;
+    }, {});
+    return Object.keys(freqMap).reduce((a, b) =>
+      freqMap[a] > freqMap[b] ? a : b
+    );
+  };
+
+  const repList = [];
+  const weightList = [];
+  const setsList = [];
+
+  workouts.forEach((workout) => {
+    workout.exercises.forEach((exercise) => {
+      repList.push(exercise.reps);
+      weightList.push(exercise.weight);
+      setsList.push(exercise.sets);
+    });
+  });
+
+  return {
+    repAverage: parseInt(getMostFrequent(repList)),
+    weightAverage: parseInt(getMostFrequent(weightList)),
+    setsAverage: parseInt(getMostFrequent(setsList)),
+  };
 };
