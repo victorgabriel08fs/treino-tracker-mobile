@@ -141,7 +141,7 @@ export const createUser = (user: User) => {
 export const exportUserData = () => {
   const selectedUser = getSelectedUser();
   const data = `data:text/json;charset=utf-8,${encodeURIComponent(
-    JSON.stringify({ selectedUser }, null, 2)
+    JSON.stringify(selectedUser, null, 2)
   )}`;
 
   const link = document.createElement("a");
