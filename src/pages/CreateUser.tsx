@@ -2,7 +2,7 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createUser } from "@/storage";
+import { createUser, importUserData } from "@/storage";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -28,6 +28,27 @@ const CreateUser = () => {
         toast.error("Usuário já cadastrado");
     }
   };
+
+  const handleImport = () => {
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.accept = ".json";
+      let result = false;
+      fileInput.onchange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          result = importUserData(e.target.result as string);
+        };
+        reader.readAsText(file);
+      };
+      fileInput.click();
+      if(result){
+        toast.success("Importação concluída com sucesso!");
+      }else{
+        toast.error("Importação falhou!");
+      }
+    };
   return (
     <div>
       <Layout props={{ guess: true }}>
@@ -61,6 +82,13 @@ const CreateUser = () => {
           </div>
           <Button type="submit" className="w-full">
             Cadastrar
+          </Button>
+          <Button
+            type="button"
+            className="w-full bg-green-400"
+            onClick={() => handleImport()}
+          >
+            Importar Usuário
           </Button>
         </form>
       </Layout>

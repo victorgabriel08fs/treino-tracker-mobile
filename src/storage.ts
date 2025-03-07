@@ -117,6 +117,7 @@ export const getUsers = () => getStoredData();
 
 export const setSelectedUser = (id: string) => {
   localStorage.setItem("selectedUser", id);
+  window.location.reload();
 };
 
 export const getSelectedUser = () => {
@@ -187,6 +188,8 @@ export const importUserData = (data: string) => {
       else return user;
     });
   }
+
+  setSelectedUser(parsedData.id);
 
   saveToLocalStorage(users);
 
