@@ -2,6 +2,13 @@ import moment from "moment";
 import Chart from "react-apexcharts";
 import "moment/dist/locale/pt-br";
 import ptBr from "apexcharts/dist/locales/pt-br.json";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "./ui/carousel";
 
 const ExercisesChart = ({ data }) => {
   const months = [];
@@ -122,9 +129,19 @@ const WorkoutTypeChart = ({ data }) => {
 
 const WorkoutCharts = ({ workouts }) => {
   return (
-    <div className="flex flex-col gap-10">
-      <ExercisesChart data={workouts} />
-      <WorkoutTypeChart data={workouts} />
+    <div className="flex px-5 flex-col gap-10">
+      <Carousel className="w-full max-w-lg mx-auto">
+        <CarouselContent>
+          <CarouselItem>
+            <ExercisesChart data={workouts} />
+          </CarouselItem>
+          <CarouselItem>
+            <WorkoutTypeChart data={workouts} />
+          </CarouselItem>
+        </CarouselContent>
+        <CarouselPrevious className="ml-2"/>
+        <CarouselNext className="mr-2"/>
+      </Carousel>
     </div>
   );
 };
