@@ -128,7 +128,6 @@ export const getSelectedUser = () => {
 
 export const updateUser = (user: User) => {
   const users = getStoredData();
-  console.log(user);
   const updatedUsers = users.map((u) => (u.id === user.id ? user : u));
   saveToLocalStorage(updatedUsers);
   return user;
@@ -172,8 +171,8 @@ export const importUserData = (data: string) => {
     users.push({
       id: parsedData.id,
       username: parsedData.username,
-      name: "",
-      email: "",
+      name: parsedData.name,
+      email: parsedData.email,
       workouts: parsedData.workouts,
     });
   } else {
