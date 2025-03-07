@@ -27,7 +27,7 @@ const NewWorkout = () => {
 
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(60);
   const [workoutType, setWorkoutType] = useState(workoutTypes[0].name);
   const averageExerciseData = exerciseAverage();
   console.log(averageExerciseData);
@@ -187,15 +187,7 @@ const NewWorkout = () => {
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Exercícios</h2>
-              <Button
-                type="button"
-                onClick={addExercise}
-                variant="outline"
-                size="sm"
-                className="h-8"
-              >
-                <Plus className="h-4 w-4 mr-1" /> Adicionar
-              </Button>
+              
             </div>
 
             <div className="space-y-5">
@@ -285,6 +277,15 @@ const NewWorkout = () => {
                   </div>
                 </div>
               ))}
+              <Button
+                type="button"
+                onClick={addExercise}
+                variant="outline"
+                size="sm"
+                className="h-8 w-full"
+              >
+                <Plus className="h-4 w-full mr-1" /> Adicionar
+              </Button>
             </div>
           </div>
 

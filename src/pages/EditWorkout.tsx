@@ -187,15 +187,6 @@ const averageExerciseData = exerciseAverage();
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Exercícios</h2>
-              <Button
-                type="button"
-                onClick={addExercise}
-                variant="outline"
-                size="sm"
-                className="h-8"
-              >
-                <Plus className="h-4 w-4 mr-1" /> Adicionar
-              </Button>
             </div>
 
             <div className="space-y-5">
@@ -285,6 +276,15 @@ const averageExerciseData = exerciseAverage();
                   </div>
                 </div>
               ))}
+               <Button
+                              type="button"
+                              onClick={addExercise}
+                              variant="outline"
+                              size="sm"
+                              className="h-8 w-full"
+                            >
+                              <Plus className="h-4 w-full mr-1" /> Adicionar
+                            </Button>
             </div>
           </div>
 
