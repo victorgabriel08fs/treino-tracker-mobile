@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import WorkoutCard from "../components/WorkoutCard";
 import WorkoutCharts from "../components/WorkoutCharts";
 import Calendar from "../components/Calendar";
+import {isSameDay } from 'date-fns';
 import AddWorkoutButton from "../components/AddWorkoutButton";
 import { Dumbbell } from "lucide-react";
 import { getSelectedUser, getWorkouts } from "@/storage";
@@ -13,6 +14,7 @@ const Index = () => {
   const [mockWorkouts, setMockWorkouts] = useState(getWorkouts(selectedUser.id));
   const [selectedDate, setSelectedDate] = useState(new Date());
   const workoutDates = mockWorkouts.map((workout) => workout.date);
+  console.log({selectedDate:selectedDate,now:new Date()});
 
   const filteredWorkouts = mockWorkouts.filter(
     (workout) =>
@@ -54,7 +56,7 @@ const Index = () => {
               <div className="rounded-full bg-accent w-14 h-14 flex items-center justify-center mb-3">
                 <Dumbbell className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-lg font-medium mb-1">Nenhum treino hoje</h3>
+              <h3 className="text-lg font-medium mb-1">Nenhum treino para {isSameDay(selectedDate, new Date()) ? "hoje" : "este dia"}</h3>
               <p className="text-muted-foreground text-sm max-w-xs mb-4">
                 Você não tem nenhum treino cadastrado para esta data. Que tal
                 adicionar um?
