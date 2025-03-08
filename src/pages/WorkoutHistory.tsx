@@ -4,6 +4,7 @@ import WorkoutCard from "../components/WorkoutCard";
 import { isSameDay } from "date-fns";
 import { CalendarDays, Clock, Filter } from "lucide-react";
 import { getSelectedUser, getWorkouts } from "@/storage";
+import AddWorkoutButton from "@/components/AddWorkoutButton";
 
 const WorkoutHistory = () => {
   const [mockWorkouts, setMockWorkouts] = useState(
@@ -123,6 +124,7 @@ const WorkoutHistory = () => {
           )}
         </div>
       </div>
+      <AddWorkoutButton />
     </Layout>
   );
 };
