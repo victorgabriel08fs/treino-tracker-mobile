@@ -22,7 +22,13 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import BlurImage from "../components/BlurImage";
-import { changeExerciseStatus, getSelectedUser, getWorkout, removeWorkout } from "@/storage";
+import {
+  changeExerciseStatus,
+  duplicateWorkout,
+  getSelectedUser,
+  getWorkout,
+  removeWorkout,
+} from "@/storage";
 import { Exercise, Workout } from "@/types";
 import { getWorkoutTypeImage } from "@/functions";
 
@@ -197,7 +203,18 @@ const WorkoutDetail = () => {
                       <Pencil className="h-4 w-4 mr-2" />
                       Editar treino
                     </Link>
-                    <button className="flex items-center w-full px-4 py-2 text-sm hover:bg-accent transition-colors">
+                    <button
+                      onClick={() => {
+                        const duplicatedWorkout = duplicateWorkout(
+                          selectedUser.id,
+                          id
+                        );
+                        if (duplicatedWorkout) {
+                          navigate(`/workout/${duplicatedWorkout.id}/edit`);
+                        }
+                      }}
+                      className="flex items-center w-full px-4 py-2 text-sm hover:bg-accent transition-colors"
+                    >
                       <Copy className="h-4 w-4 mr-2" />
                       Duplicar treino
                     </button>

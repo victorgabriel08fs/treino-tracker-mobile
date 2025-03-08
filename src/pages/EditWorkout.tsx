@@ -100,7 +100,7 @@ const EditWorkout = () => {
     updateWorkout(selectedUser.id, updatedWorkout);
 
     toast.success("Treino salvo com sucesso!");
-    navigate(-1);
+    navigate('/history');
   };
 
   return (

@@ -108,6 +108,30 @@ export const removeWorkout = (userId: string, workoutId: string) => {
   saveToLocalStorage(updatedUsers);
 };
 
+export const duplicateWorkout = (userId: string, workoutId: string) => {
+  const users = getStoredData();
+  const user = users.find((user) => user.id === userId);
+  if (!user) return;
+  const workout = user.workouts.find((workout) => workout.id === workoutId);
+  if (!workout) return;
+
+  const newWorkout = { ...workout, id: uuidv4() };
+  newWorkout.exercises = newWorkout.exercises.map((exercise) => ({
+    ...exercise,
+    id: uuidv4(),
+    isCompleted: false,
+  }));
+  const updatedWorkouts = [...user.workouts, newWorkout];
+
+  const updatedUsers = users.map((user) =>
+    user.id === userId ? { ...user, workouts: updatedWorkouts } : user
+  );
+
+  saveToLocalStorage(updatedUsers);
+
+  return newWorkout;
+};
+
 export const getUser = (id: string) => {
   const users = getStoredData();
   return users.find((user) => user.id === id);

@@ -30,7 +30,6 @@ const NewWorkout = () => {
   const [duration, setDuration] = useState(60);
   const [workoutType, setWorkoutType] = useState(workoutTypes[0].name);
   const averageExerciseData = exerciseAverage();
-  console.log(averageExerciseData);
   const [exercises, setExercises] = useState<Exercise[]>([
     {
       id: uuidv4(),
