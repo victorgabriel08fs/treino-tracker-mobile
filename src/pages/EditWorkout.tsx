@@ -41,7 +41,7 @@ const EditWorkout = () => {
   const [workoutType, setWorkoutType] = useState(mockWorkout.workoutType);
   const [exercises, setExercises] = useState<Exercise[]>(mockWorkout.exercises);
   const [notes, setNotes] = useState(mockWorkout.notes);
-const averageExerciseData = exerciseAverage();
+  const averageExerciseData = exerciseAverage();
   const addExercise = () => {
     setExercises([
       ...exercises,
@@ -142,14 +142,26 @@ const averageExerciseData = exerciseAverage();
               />
             </div>
 
-            <div>
-              <Label htmlFor="date">Data do Treino</Label>
-              <Input
-                id="date"
-                type="date"
-                value={moment(date).format("YYYY-MM-DD")}
-                onChange={(e) => setDate(e.target.value)}
-              />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="date">Data do Treino</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={moment(date).format("YYYY-MM-DD")}
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="duration">Duração do Treino</Label>
+                <Input
+                  id="duration"
+                  type="number"
+                  value={duration}
+                  placeholder="Ex: 30 minutos"
+                  onChange={(e) => setDuration(parseInt(e.target.value))}
+                />
+              </div>
             </div>
 
             <div>
@@ -161,7 +173,7 @@ const averageExerciseData = exerciseAverage();
                     type="button"
                     className={`p-2 rounded-md border text-sm transition-all ${
                       workoutType === type.name
-                        ? `${type.color} text-primary-foreground border-primary`
+                        ? `${type.color} text-primary-foreground font-semibold`
                         : "bg-card border-border hover:bg-accent"
                     }`}
                     onClick={() => setWorkoutType(type.name)}
@@ -170,17 +182,6 @@ const averageExerciseData = exerciseAverage();
                   </button>
                 ))}
               </div>
-            </div>
-
-            <div>
-              <Label htmlFor="duration">Duração do Treino (minutos)</Label>
-              <Input
-                id="duration"
-                type="number"
-                value={duration}
-                placeholder="Ex: 30 minutos"
-                onChange={(e) => setDuration(parseInt(e.target.value))}
-              />
             </div>
           </div>
 
@@ -276,15 +277,15 @@ const averageExerciseData = exerciseAverage();
                   </div>
                 </div>
               ))}
-               <Button
-                              type="button"
-                              onClick={addExercise}
-                              variant="outline"
-                              size="sm"
-                              className="h-8 w-full"
-                            >
-                              <Plus className="h-4 w-full mr-1" /> Adicionar
-                            </Button>
+              <Button
+                type="button"
+                onClick={addExercise}
+                variant="outline"
+                size="sm"
+                className="h-8 w-full"
+              >
+                <Plus className="h-4 w-full mr-1" /> Adicionar
+              </Button>
             </div>
           </div>
 

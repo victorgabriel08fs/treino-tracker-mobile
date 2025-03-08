@@ -142,14 +142,26 @@ const NewWorkout = () => {
               />
             </div>
 
-            <div>
-              <Label htmlFor="date">Data do Treino</Label>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="date">Data do Treino</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </div>
+              <div>
+              <Label htmlFor="duration">Duração do Treino</Label>
               <Input
-                id="date"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                id="duration"
+                type="number"
+                value={duration}
+                placeholder="Ex: 30 minutos"
+                onChange={(e) => setDuration(parseInt(e.target.value))}
               />
+            </div>
             </div>
 
             <div>
@@ -161,7 +173,7 @@ const NewWorkout = () => {
                     type="button"
                     className={`p-2 rounded-md border text-sm transition-all ${
                       workoutType === type.name
-                        ? `${type.color} text-primary-foreground`
+                        ? `${type.color} text-primary-foreground font-semibold`
                         : "bg-card border-border hover:bg-accent"
                     }`}
                     onClick={() => setWorkoutType(type.name)}
@@ -172,22 +184,12 @@ const NewWorkout = () => {
               </div>
             </div>
 
-            <div>
-              <Label htmlFor="duration">Duração do Treino (minutos)</Label>
-              <Input
-                id="duration"
-                type="number"
-                value={duration}
-                placeholder="Ex: 30 minutos"
-                onChange={(e) => setDuration(parseInt(e.target.value))}
-              />
-            </div>
+            
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Exercícios</h2>
-              
             </div>
 
             <div className="space-y-5">
