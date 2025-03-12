@@ -12,6 +12,7 @@ export type Workout = {
   name: string;
   date: Date; 
   duration?: number;
+  realDuration?: number;
   notes?: string;
   exerciseCount: number;
   workoutType: string;

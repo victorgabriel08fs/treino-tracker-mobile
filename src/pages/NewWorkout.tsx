@@ -28,15 +28,16 @@ const NewWorkout = () => {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState(60);
+  const [realDuration, setRealDuration] = useState(null);
   const [workoutType, setWorkoutType] = useState(workoutTypes[0].name);
   const averageExerciseData = exerciseAverage();
   const [exercises, setExercises] = useState<Exercise[]>([
     {
       id: uuidv4(),
       name: "",
-      sets: averageExerciseData.setsAverage || 3,
-      reps: averageExerciseData.repAverage || 12,
-      weight: averageExerciseData.weightAverage || 0,
+      sets: averageExerciseData?.setsAverage || 3,
+      reps: averageExerciseData?.repAverage || 12,
+      weight: averageExerciseData?.weightAverage || 0,
       isCompleted: false,
     },
   ]);
@@ -48,9 +49,9 @@ const NewWorkout = () => {
       {
         id: Math.random().toString(36).substr(2, 9),
         name: "",
-        sets: averageExerciseData.setsAverage || 3,
-        reps: averageExerciseData.repAverage || 12,
-        weight: averageExerciseData.weightAverage || 0,
+        sets: averageExerciseData?.setsAverage || 3,
+        reps: averageExerciseData?.repAverage || 12,
+        weight: averageExerciseData?.weightAverage || 0,
         isCompleted: false,
       },
     ]);
@@ -93,6 +94,7 @@ const NewWorkout = () => {
       name: name,
       date: convertedDate,
       duration: duration,
+      realDuration: realDuration,
       exerciseCount: exercises.length,
       workoutType: workoutType,
       exercises: exercises,

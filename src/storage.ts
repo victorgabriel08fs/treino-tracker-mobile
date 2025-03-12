@@ -222,13 +222,19 @@ export const importUserData = (data: string) => {
 
 export const exerciseAverage = () => {
   const selectedUser = getSelectedUser();
+  if (!selectedUser) return null;
+
   const workouts = getWorkouts(selectedUser.id);
+  if (!workouts || workouts.length === 0) return null;
 
   const getMostFrequent = (arr) => {
+    if (arr.length === 0) return null; // Evita erro em arrays vazios
+
     const freqMap = arr.reduce((acc, val) => {
       acc[val] = (acc[val] || 0) + 1;
       return acc;
     }, {});
+
     return Object.keys(freqMap).reduce((a, b) =>
       freqMap[a] > freqMap[b] ? a : b
     );
@@ -239,16 +245,19 @@ export const exerciseAverage = () => {
   const setsList = [];
 
   workouts.forEach((workout) => {
-    workout.exercises.forEach((exercise) => {
-      repList.push(exercise.reps);
-      weightList.push(exercise.weight);
-      setsList.push(exercise.sets);
-    });
+    if (workout.exercises && workout.exercises.length > 0) {
+      workout.exercises.forEach((exercise) => {
+        if (exercise.reps) repList.push(exercise.reps);
+        if (exercise.weight) weightList.push(exercise.weight);
+        if (exercise.sets) setsList.push(exercise.sets);
+      });
+    }
   });
 
   return {
-    repAverage: parseInt(getMostFrequent(repList)),
-    weightAverage: parseInt(getMostFrequent(weightList)),
-    setsAverage: parseInt(getMostFrequent(setsList)),
+    repAverage: repList.length ? parseInt(getMostFrequent(repList)) : null,
+    weightAverage: weightList.length ? parseInt(getMostFrequent(weightList)) : null,
+    setsAverage: setsList.length ? parseInt(getMostFrequent(setsList)) : null,
   };
 };
+
