@@ -130,17 +130,20 @@ const WorkoutTypeChart = ({ data }) => {
 const WorkoutCharts = ({ workouts }) => {
   return (
     <div className="flex px-5 flex-col gap-10">
-      <Carousel className="w-full max-w-lg mx-auto">
+      <Carousel
+        className="w-full max-w-lg mx-auto"
+        opts={{ slidesToScroll: 1 }}
+      >
         <CarouselContent>
-          <CarouselItem>
+          <CarouselItem className="basis-full">
             <ExercisesChart data={workouts} />
           </CarouselItem>
-          <CarouselItem>
+          <CarouselItem className="basis-full">
             <WorkoutTypeChart data={workouts} />
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious className="ml-2"/>
-        <CarouselNext className="mr-2"/>
+        <CarouselPrevious className="ml-2" />
+        <CarouselNext className="mr-2" />
       </Carousel>
     </div>
   );
