@@ -39,13 +39,13 @@ const WorkoutNumbers = ({ workouts }) => {
   );
   const workoutTimePercent = Math.round((workoutTime * 100) / workoutTimeTotal);
   const weight = getValidExercises(workouts).reduce(
-    (total, exercise) => total + exercise.weight,
+    (total, exercise) => total + exercise.weight* exercise.reps,
     0
   );
   const weightTotal = workouts.reduce(
     (total, workout) =>
       total +
-      workout.exercises.reduce((total, exercise) => total + exercise.weight, 0),
+      workout.exercises.reduce((total, exercise) => total + exercise.weight * exercise.reps, 0),
     0
   );
   const weightPercent = Math.round((weight * 100) / weightTotal);
@@ -88,7 +88,7 @@ const WorkoutNumbers = ({ workouts }) => {
           </CarouselItem>
           <CarouselItem className="p-4 bg-blue-500 rounded-lg basis-1/3">
             <WorkoutNumberCard
-              label={weight === 1 ? "Kg" : "Kgs"}
+              label={weight === 1 ? "Kg" : weight > 1000 ? (weight/1000 == 1 ? "Ton" : "Tons") : "Kgs"}
               value={weight}
               obs={`${weightPercent + "%"}`}
             />
