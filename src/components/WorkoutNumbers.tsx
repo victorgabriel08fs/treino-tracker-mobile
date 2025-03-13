@@ -30,7 +30,7 @@ const WorkoutNumbers = ({ workouts }) => {
   );
   const exercisePercent = Math.round((exercisesCount * 100) / exercisesTotal);
   const workoutTime = getValidWorkouts(workouts).reduce(
-    (total, workout) => total + workout.realDuration,
+    (total, workout) => total + workout?.realDuration||0,
     0
   );
   const workoutTimeTotal = workouts.reduce(
