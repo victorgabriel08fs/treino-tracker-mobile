@@ -89,7 +89,7 @@ const WorkoutNumbers = ({ workouts }) => {
           <CarouselItem className="p-4 bg-blue-500 rounded-lg basis-1/3">
             <WorkoutNumberCard
               label={weight === 1 ? "Kg" : weight > 1000 ? (weight/1000 == 1 ? "Ton" : "Tons") : "Kgs"}
-              value={weight}
+              value={weight > 1000 ? Math.floor(weight/1000) : weight}
               obs={`${weightPercent + "%"}`}
             />
           </CarouselItem>
