@@ -142,8 +142,7 @@ const NewWorkout = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-4">
               <div>
                 <Label htmlFor="date">Data do Treino</Label>
                 <Input
@@ -153,16 +152,29 @@ const NewWorkout = () => {
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
-              <div>
-              <Label htmlFor="duration">Duração do Treino</Label>
-              <Input
-                id="duration"
-                type="number"
-                value={duration}
-                placeholder="Ex: 30 minutos"
-                onChange={(e) => setDuration(parseInt(e.target.value))}
-              />
             </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="duration">Duração do Treino</Label>
+                <Input
+                  id="duration"
+                  type="number"
+                  value={duration}
+                  placeholder="Ex: 30 minutos"
+                  onChange={(e) => setDuration(parseInt(e.target.value))}
+                />
+              </div>
+              <div>
+                <Label htmlFor="realDuration">Duração Real do Treino</Label>
+                <Input
+                  id="realDuration"
+                  type="number"
+                  value={realDuration}
+                  placeholder="Ex: 30 minutos"
+                  onChange={(e) => setRealDuration(parseInt(e.target.value))}
+                />
+              </div>
             </div>
 
             <div>
@@ -184,8 +196,6 @@ const NewWorkout = () => {
                 ))}
               </div>
             </div>
-
-            
           </div>
 
           <div>

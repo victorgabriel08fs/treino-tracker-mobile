@@ -38,6 +38,7 @@ const EditWorkout = () => {
   const [name, setName] = useState(mockWorkout.name);
   const [date, setDate] = useState(mockWorkout.date);
   const [duration, setDuration] = useState(mockWorkout.duration);
+  const [realDuration, setRealDuration] = useState(mockWorkout?.realDuration||null);
   const [workoutType, setWorkoutType] = useState(mockWorkout.workoutType);
   const [exercises, setExercises] = useState<Exercise[]>(mockWorkout.exercises);
   const [notes, setNotes] = useState(mockWorkout.notes);
@@ -48,9 +49,9 @@ const EditWorkout = () => {
       {
         id: Math.random().toString(36).substr(2, 9),
         name: "",
-        sets: averageExerciseData.setsAverage || 3,
-        reps: averageExerciseData.repAverage || 12,
-        weight: averageExerciseData.weightAverage || 0,
+        sets: averageExerciseData?.setsAverage || 3,
+        reps: averageExerciseData?.repAverage || 12,
+        weight: averageExerciseData?.weightAverage || 0,
         isCompleted: false,
       },
     ]);
@@ -93,6 +94,7 @@ const EditWorkout = () => {
       name: name,
       date: convertedDate,
       duration: duration,
+      realDuration: realDuration||null,
       exerciseCount: exercises.length,
       workoutType: workoutType,
       exercises: exercises,
@@ -142,8 +144,8 @@ const EditWorkout = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div>
+          <div className="space-y-4">
+            <div>
                 <Label htmlFor="date">Data do Treino</Label>
                 <Input
                   id="date"
@@ -152,6 +154,8 @@ const EditWorkout = () => {
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
+              </div>
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label htmlFor="duration">Duração do Treino</Label>
                 <Input
@@ -160,6 +164,16 @@ const EditWorkout = () => {
                   value={duration}
                   placeholder="Ex: 30 minutos"
                   onChange={(e) => setDuration(parseInt(e.target.value))}
+                />
+              </div>
+              <div>
+                <Label htmlFor="realDuration">Duração Real do Treino</Label>
+                <Input
+                  id="realDuration"
+                  type="number"
+                  value={realDuration}
+                  placeholder="Ex: 30 minutos"
+                  onChange={(e) => setRealDuration(parseInt(e.target.value))}
                 />
               </div>
             </div>

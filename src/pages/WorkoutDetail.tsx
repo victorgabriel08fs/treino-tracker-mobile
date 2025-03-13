@@ -135,7 +135,12 @@ const WorkoutDetail = () => {
           )}</p>
           ${
             mockWorkout.duration
-              ? `<p class="info"><strong>Duração:</strong> ${mockWorkout.duration} minutos</p>`
+              ? `<p class="info"><strong>Duração esperada:</strong> ${mockWorkout.duration} minutos</p>`
+              : ""
+          }
+          ${
+            mockWorkout.realDuration
+              ? `<p class="info"><strong>Duração real:</strong> ${mockWorkout.realDuration} minutos</p>`
               : ""
           }
   
@@ -251,10 +256,16 @@ const WorkoutDetail = () => {
               <Calendar className="h-4 w-4 mr-1" />
               {format(mockWorkout.date, "d 'de' MMMM", { locale: ptBR })}
             </div>
-            <div className="flex items-center">
-              <Clock className="h-4 w-4 mr-1" />
+            <div className="text-yellow-400 flex items-center">
+              <Clock className=" h-4 w-4 mr-1" />
               {mockWorkout.duration} minutos
             </div>
+            {mockWorkout.realDuration && (
+              <div className="text-blue-400 flex items-center">
+                <Clock className="h-4 w-4 mr-1" />
+                {mockWorkout.realDuration} minutos
+              </div>
+            )}
           </div>
         </div>
 
