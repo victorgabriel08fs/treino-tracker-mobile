@@ -14,16 +14,27 @@ import EditWorkout from "./pages/EditWorkout";
 import Profile from "./pages/Profile";
 import { getSelectedUser, getUsers, setSelectedUser } from "./storage";
 import CreateUser from "./pages/CreateUser";
+import api from "./api";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   const [key, setKey] = useState(0);
   useEffect(() => {
+    handleTestApi();
     if (!getSelectedUser()) {
       if (getUsers().length > 0) setSelectedUser(getUsers()[0].id);
     }
   }, []);
+
+  const handleTestApi = async () => {
+    try {
+      await api.get("/").then((res) => console.log(res.data)).catch((err) => console.log(err));
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <WorkoutProvider>

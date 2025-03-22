@@ -17,7 +17,6 @@ const Index = () => {
   );
   const [selectedDate, setSelectedDate] = useState(new Date());
   const workoutDates = mockWorkouts.map((workout) => workout.date);
-  console.log({ selectedDate: selectedDate, now: new Date() });
 
   const filteredWorkouts = mockWorkouts.filter(
     (workout) =>
