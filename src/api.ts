@@ -1,11 +1,14 @@
-import dotenv from 'dotenv'
-import axios from 'axios'
+import dotenv from "dotenv";
+import axios from "axios";
 
-const api = axios.create({
+let api = null;
+if (import.meta.env.VITE_API_URL) {
+  api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     headers: {
-        "Content-Type": "application/json",
+      "Content-Type": "application/json",
     },
-});
+  });
+}
 
-export default api
+export default api;
