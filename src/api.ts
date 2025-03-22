@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import axios from "axios";
 
 let api = null;
