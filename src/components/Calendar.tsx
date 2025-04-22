@@ -144,7 +144,7 @@ const Calendar = ({
                 <span
                   className={`absolute bottom-1 w-2 h-2 rounded-full ${
                     isCompleted(day)
-                      ? "bg-green-500 animate-ping"
+                      ? "bg-green-500 animate-ping-synced"
                       : isBeforeToday(day)
                       ? "bg-red-500"
                       : "bg-yellow-500"
