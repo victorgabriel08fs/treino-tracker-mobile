@@ -9,6 +9,7 @@ import { Dumbbell } from "lucide-react";
 import { getSelectedUser, getWorkouts } from "@/storage";
 import WorkoutNumbers from "@/components/WorkoutNumbers";
 import { getValidWorkouts } from "@/functions";
+import { get } from "http";
 
 const Index = () => {
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
@@ -57,6 +58,11 @@ const Index = () => {
                 isToday={false}
                 exerciseCount={workout.exerciseCount}
                 workoutType={workout.workoutType}
+                isCompleted={getValidWorkouts([workout]).length > 0}
+                isPending={
+                  getValidWorkouts([workout]).length <= 0 &&
+                  isSameDay(workout.date, new Date())
+                }
               />
             ))
           ) : (

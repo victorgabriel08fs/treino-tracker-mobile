@@ -5,6 +5,7 @@ import { isSameDay } from "date-fns";
 import { CalendarDays, Clock, Filter } from "lucide-react";
 import { getSelectedUser, getWorkouts } from "@/storage";
 import AddWorkoutButton from "@/components/AddWorkoutButton";
+import { getValidWorkouts } from "@/functions";
 
 const WorkoutHistory = () => {
   const [mockWorkouts, setMockWorkouts] = useState(
@@ -104,6 +105,8 @@ const WorkoutHistory = () => {
                       isToday={isSameDay(workout.date, new Date())}
                       exerciseCount={workout.exerciseCount}
                       workoutType={workout.workoutType}
+                      isCompleted={getValidWorkouts([workout]).length > 0}
+                      isPending={getValidWorkouts([workout]).length <= 0 && isSameDay(workout.date, new Date())}
                     />
                   ))}
                 </div>
