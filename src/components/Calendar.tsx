@@ -149,6 +149,11 @@ const Calendar = ({
                       ? "bg-red-500"
                       : "bg-yellow-500"
                   }`}
+                  style={
+                    isCompleted(day)
+                      ? { animationDelay: `${Date.now() % 1000}ms` }
+                      : undefined
+                  }
                 />
               )}
             </button>
