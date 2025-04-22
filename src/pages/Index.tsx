@@ -8,6 +8,7 @@ import AddWorkoutButton from "../components/AddWorkoutButton";
 import { Dumbbell } from "lucide-react";
 import { getSelectedUser, getWorkouts } from "@/storage";
 import WorkoutNumbers from "@/components/WorkoutNumbers";
+import { getValidWorkouts } from "@/functions";
 
 const Index = () => {
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
@@ -16,7 +17,12 @@ const Index = () => {
     getWorkouts(selectedUser.id)
   );
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const workoutDates = mockWorkouts.map((workout) => workout.date);
+  const workoutDates = mockWorkouts.map((workout) => {
+    return {
+      date: workout.date,
+      isCompleted: getValidWorkouts([workout]).length > 0,
+    };
+  });
 
   const filteredWorkouts = mockWorkouts.filter(
     (workout) =>
@@ -73,17 +79,19 @@ const Index = () => {
         {mockWorkouts.length > 0 && (
           <div>
             <div className="mb-4">
-            <h2 className="text-xl font-semibold mb-3">Alguns números</h2>
-            <WorkoutNumbers
-              workouts={getWorkouts(selectedUser.id, { sort: true })}
-            />
-          </div>
-          <div className="mb-4">
-            <h2 className="text-xl font-semibold mb-3">Agora seus gráficos</h2>
-            <WorkoutCharts
-              workouts={getWorkouts(selectedUser.id, { sort: true })}
-            />
-          </div>
+              <h2 className="text-xl font-semibold mb-3">Alguns números</h2>
+              <WorkoutNumbers
+                workouts={getWorkouts(selectedUser.id, { sort: true })}
+              />
+            </div>
+            <div className="mb-4">
+              <h2 className="text-xl font-semibold mb-3">
+                Agora seus gráficos
+              </h2>
+              <WorkoutCharts
+                workouts={getWorkouts(selectedUser.id, { sort: true })}
+              />
+            </div>
           </div>
         )}
       </div>
