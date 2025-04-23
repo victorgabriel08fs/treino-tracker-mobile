@@ -19,6 +19,7 @@ import {
 import moment from "moment";
 import { getWorkoutTypeImage } from "@/functions";
 import BlurImage from "@/components/BlurImage";
+import { muscleGroups } from "@/static_data";
 
 const workoutTypes = [
   { name: "Força", color: "bg-primary" },
@@ -38,11 +39,16 @@ const EditWorkout = () => {
   const [name, setName] = useState(mockWorkout.name);
   const [date, setDate] = useState(mockWorkout.date);
   const [duration, setDuration] = useState(mockWorkout.duration);
-  const [realDuration, setRealDuration] = useState(mockWorkout?.realDuration||null);
+  const [realDuration, setRealDuration] = useState(
+    mockWorkout?.realDuration || null
+  );
   const [workoutType, setWorkoutType] = useState(mockWorkout.workoutType);
   const [exercises, setExercises] = useState<Exercise[]>(mockWorkout.exercises);
   const [notes, setNotes] = useState(mockWorkout.notes);
   const averageExerciseData = exerciseAverage();
+  const [selectedMuscleGroups, setSelectedMuscleGroups] = useState(
+    mockWorkout?.muscleGroups || []
+  );
   const addExercise = () => {
     setExercises([
       ...exercises,
@@ -88,21 +94,26 @@ const EditWorkout = () => {
       return;
     }
     const convertedDate = moment(date).utc().toDate();
-
+    if (selectedMuscleGroups.length === 0) {
+      toast.error("Selecione pelo menos um grupo muscular.");
+      return;
+    }
+    
     const updatedWorkout: Workout = {
       id: id,
       name: name,
       date: convertedDate,
       duration: duration,
-      realDuration: realDuration||null,
+      realDuration: realDuration || null,
       exerciseCount: exercises.length,
       workoutType: workoutType,
+      muscleGroups: selectedMuscleGroups,
       exercises: exercises,
     };
     updateWorkout(selectedUser.id, updatedWorkout);
 
     toast.success("Treino salvo com sucesso!");
-    navigate('/history');
+    navigate("/history");
   };
 
   return (
@@ -144,8 +155,8 @@ const EditWorkout = () => {
               />
             </div>
 
-          <div className="space-y-4">
-            <div>
+            <div className="space-y-4">
+              <div>
                 <Label htmlFor="date">Data do Treino</Label>
                 <Input
                   id="date"
@@ -154,7 +165,7 @@ const EditWorkout = () => {
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
-              </div>
+            </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label htmlFor="duration">Duração do Treino</Label>
@@ -198,7 +209,36 @@ const EditWorkout = () => {
               </div>
             </div>
           </div>
-
+          <div>
+            <Label htmlFor="muscleGroups">Grupos Musculares</Label>
+            <div className="grid grid-cols-4 gap-2 mt-1">
+              {muscleGroups.map((group) => (
+                <button
+                  key={group.id}
+                  type="button"
+                  className={`p-2 rounded-md border text-sm transition-all ${
+                    selectedMuscleGroups.includes(group.id)
+                      ? "bg-primary text-primary-foreground font-semibold"
+                      : "bg-card border-border hover:bg-accent"
+                  }`}
+                  onClick={() => {
+                    if (selectedMuscleGroups.includes(group.id)) {
+                      setSelectedMuscleGroups(
+                        selectedMuscleGroups.filter((name) => name !== group.id)
+                      );
+                    } else {
+                      setSelectedMuscleGroups([
+                        ...selectedMuscleGroups,
+                        group.id,
+                      ]);
+                    }
+                  }}
+                >
+                  {group.name}
+                </button>
+              ))}
+            </div>
+          </div>
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Exercícios</h2>

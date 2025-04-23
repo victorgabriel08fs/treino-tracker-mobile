@@ -13,6 +13,7 @@ import { addWorkout, exerciseAverage, getSelectedUser } from "@/storage";
 import moment from "moment";
 import BlurImage from "@/components/BlurImage";
 import { getWorkoutTypeImage } from "@/functions";
+import { muscleGroups } from "@/static_data";
 
 const workoutTypes = [
   { name: "Força", color: "bg-primary" },
@@ -31,6 +32,8 @@ const NewWorkout = () => {
   const [realDuration, setRealDuration] = useState(null);
   const [workoutType, setWorkoutType] = useState(workoutTypes[0].name);
   const averageExerciseData = exerciseAverage();
+  const [selectedMuscleGroups, setSelectedMuscleGroups] = useState([]);
+
   const [exercises, setExercises] = useState<Exercise[]>([
     {
       id: uuidv4(),
@@ -87,6 +90,12 @@ const NewWorkout = () => {
       toast.error("Todos os exercícios precisam ter um nome");
       return;
     }
+
+    if (selectedMuscleGroups.length === 0) {
+      toast.error("Selecione pelo menos um grupo muscular.");
+      return;
+    }
+
     const convertedDate = moment(date).utc().toDate();
 
     const newWorkout: Workout = {
@@ -97,6 +106,7 @@ const NewWorkout = () => {
       realDuration: realDuration,
       exerciseCount: exercises.length,
       workoutType: workoutType,
+      muscleGroups: selectedMuscleGroups,
       exercises: exercises,
     };
     addWorkout(selectedUser.id, newWorkout);
@@ -198,6 +208,38 @@ const NewWorkout = () => {
             </div>
           </div>
 
+          <div>
+            <Label htmlFor="muscleGroups">Grupos Musculares</Label>
+            <div className="grid grid-cols-4 gap-2 mt-1">
+              {muscleGroups.map((group) => (
+                <button
+                  key={group.id}
+                  type="button"
+                  className={`p-2 rounded-md border text-sm transition-all ${
+                    selectedMuscleGroups.includes(group.name)
+                      ? "bg-primary text-primary-foreground font-semibold"
+                      : "bg-card border-border hover:bg-accent"
+                  }`}
+                  onClick={() => {
+                    if (selectedMuscleGroups.includes(group.name)) {
+                      setSelectedMuscleGroups(
+                        selectedMuscleGroups.filter(
+                          (name) => name !== group.name
+                        )
+                      );
+                    } else {
+                      setSelectedMuscleGroups([
+                        ...selectedMuscleGroups,
+                        group.name,
+                      ]);
+                    }
+                  }}
+                >
+                  {group.name}
+                </button>
+              ))}
+            </div>
+          </div>
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Exercícios</h2>

@@ -30,7 +30,7 @@ import {
   removeWorkout,
 } from "@/storage";
 import { Exercise, Workout } from "@/types";
-import { getWorkoutTypeImage } from "@/functions";
+import { getMuscleGroupName, getWorkoutTypeImage } from "@/functions";
 
 const WorkoutDetail = () => {
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
@@ -269,6 +269,25 @@ const WorkoutDetail = () => {
           </div>
         </div>
 
+        {mockWorkout.muscleGroups.length > 0 && (
+          <div className="mb-6">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-lg font-semibold">Grupos Musculares</h2>
+              <div>
+                {mockWorkout.muscleGroups.map(
+                  (muscleGroup) =>
+                    getMuscleGroupName(muscleGroup) +
+                    (muscleGroup !==
+                    mockWorkout.muscleGroups[
+                      mockWorkout.muscleGroups.length - 1
+                    ]
+                      ? ", "
+                      : "")
+                )}
+              </div>
+            </div>
+          </div>
+        )}
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-lg font-semibold">Progresso</h2>

@@ -17,6 +17,7 @@ export type Workout = {
   exerciseCount: number;
   workoutType: string;
   exercises: Exercise[];
+  muscleGroups?: string[];
 };
 
 export type User = {
