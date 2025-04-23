@@ -144,16 +144,12 @@ const Calendar = ({
                 <span
                   className={`absolute bottom-1 w-2 h-2 rounded-full ${
                     isCompleted(day)
-                      ? "bg-green-500 animate-ping-synced"
+                      ? "bg-green-500"
                       : isBeforeToday(day)
                       ? "bg-red-500"
                       : "bg-yellow-500"
                   }`}
-                  style={
-                    isCompleted(day)
-                      ? { animationDelay: `${Date.now() % 1000}ms` }
-                      : undefined
-                  }
+                  
                 />
               )}
             </button>
