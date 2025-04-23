@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import { getSelectedUser, getUsers, setSelectedUser } from "./storage";
 import CreateUser from "./pages/CreateUser";
 import api from "./api";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -29,8 +30,10 @@ const App = () => {
 
   const handleTestApi = async () => {
     try {
-      await api.get("/").then((res) => console.log(res.data)).catch((err) => console.log(err));
-      
+      await api
+        .get("/")
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +48,16 @@ const App = () => {
             <BrowserRouter>
               <Routes>
                 {!getSelectedUser() ? (
-                  <Route path="/" element={<CreateUser key={`create-${key}`} />} />
+                  <>
+                    <Route
+                      path="/register"
+                      element={<CreateUser key={`create-${key}`} />}
+                    />
+                    <Route
+                      path="/"
+                      element={<Login key={`login-${key}`} />}
+                    />
+                  </>
                 ) : (
                   <>
                     <Route path="/" element={<Index key={`index-${key}`} />} />

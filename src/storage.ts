@@ -1,3 +1,4 @@
+import api from "./api";
 import { User, Workout } from "./types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -74,14 +75,9 @@ export const changeExerciseStatus = (
   return true;
 };
 
-export const getWorkouts = (userId: string, options?: any): Workout[] => {
-  const users = getStoredData();
-  const user = users.find((user) => user.id === userId);
-  if (!user) return [];
-  const workouts = user.workouts.map((workout) => ({
-    ...workout,
-    date: new Date(workout.date),
-  }));
+export const getWorkouts = async (userId: string, options?: any): Workout[] => {
+  let workouts = [];
+  await api.get("/workouts").then(async (res) => workouts = await res.data).catch((err) => console.log(err));
 
   if (options?.sort) {
     workouts.sort((a, b) => {
@@ -146,9 +142,8 @@ export const setSelectedUser = (id: string) => {
 
 export const getSelectedUser = () => {
   const users = getStoredData();
-  const id = localStorage.getItem("selectedUser");
-  if (!id) return users[0];
-  return users.find((user) => user.id === id);
+  const user = localStorage.getItem("user");
+  if (user) return JSON.parse(user);
 };
 
 export const updateUser = (user: User) => {
