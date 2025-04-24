@@ -143,7 +143,15 @@ const WorkoutDetail = () => {
               ? `<p class="info"><strong>Duração real:</strong> ${mockWorkout.realDuration} minutos</p>`
               : ""
           }
-  
+          ${
+            mockWorkout.muscleGroups && mockWorkout.muscleGroups.length > 0
+              ? `<p class="info"><strong>Grupos Musculares:</strong> ` +
+                mockWorkout.muscleGroups
+                  .map((groupId) => getMuscleGroupName(groupId))
+                  .join(", ") +
+                `</p>`
+              : ""
+          }
           <h2>Exercícios</h2>
           <ul>
             ${exercises
