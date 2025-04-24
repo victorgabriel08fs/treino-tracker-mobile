@@ -21,7 +21,6 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const [key, setKey] = useState(0);
-  muscleGroupMigration();
   useEffect(() => {
     handleTestApi();
     if (!getSelectedUser()) {
