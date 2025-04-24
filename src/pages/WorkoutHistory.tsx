@@ -106,7 +106,10 @@ const WorkoutHistory = () => {
                       exerciseCount={workout.exerciseCount}
                       workoutType={workout.workoutType}
                       isCompleted={getValidWorkouts([workout]).length > 0}
-                      isPending={getValidWorkouts([workout]).length <= 0 && isSameDay(workout.date, new Date())}
+                      isPending={
+                        getValidWorkouts([workout]).length <= 0 &&
+                        isSameDay(workout.date, new Date())
+                      }
                     />
                   ))}
                 </div>
