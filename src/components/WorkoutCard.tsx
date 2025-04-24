@@ -29,7 +29,7 @@ const WorkoutCard = ({
   workoutType,
   isToday,
   isCompleted,
-  isPending
+  isPending,
 }: WorkoutCardProps) => {
   const WorkoutIcon = ({ type }: WorkoutIconProps) => {
     switch (type) {
@@ -45,13 +45,27 @@ const WorkoutCard = ({
         return <Dumbbell className="h-5 w-5 text-primary" />;
     }
   };
+
+  const isBeforeToday = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const incomingDate = new Date(date);
+    incomingDate.setHours(0, 0, 0, 0);
+
+    return incomingDate.getTime() < today.getTime();
+  };
   date = moment(date).utc().toDate();
   return (
     <Link
       to={`/workout/${id}`}
-      className={`block w-full mb-4 animate-scale-in ${
-        isCompleted ? "border-b-4 rounded-2xl border-b-green-400" : ""
-      } ${isPending ? "border-b-4 rounded-2xl border-b-yellow-400" : ""} ${!isCompleted && !isPending ? "border-b-4 rounded-2xl border-b-red-400" : ""}`}
+      className={`block w-full mb-4 animate-scale-in border-b-4 rounded-2xl ${
+        isCompleted
+          ? "border-b-green-500"
+          : isBeforeToday(date)
+          ? "border-b-red-500"
+          : "border-b-yellow-500"
+      }`}
     >
       <div
         className={`rounded-xl p-4 border border-border ${
