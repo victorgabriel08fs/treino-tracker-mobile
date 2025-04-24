@@ -43,4 +43,8 @@ export const muscleGroups = [
     id: "e27d22b4-2c8b-4d23-8e09-c5ac59c308c1",
     name: "Abdômen",
   },
+  {
+    id: "f1c3b3b9-6b8f-4f6b-9a4f-2f4b3f4e8b3b",
+    name: "Antebraço",
+  },
 ];
