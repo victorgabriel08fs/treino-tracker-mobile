@@ -10,6 +10,8 @@ import { getSelectedUser, getWorkouts } from "@/storage";
 import WorkoutNumbers from "@/components/WorkoutNumbers";
 import { getValidWorkouts } from "@/functions";
 import { get } from "http";
+import WeekReview from "@/components/WeekReview";
+import moment from "moment";
 
 const Index = () => {
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
@@ -23,6 +25,14 @@ const Index = () => {
       date: workout.date,
       isCompleted: getValidWorkouts([workout]).length > 0,
     };
+  });
+  const weekDates = [];
+  weekDates.push(moment().startOf("week"));
+  for (let i = 1; i < 7; i++) {
+    weekDates.push(moment().startOf("week").add(i, "days"));
+  }
+  const thisWeekWorkouts = mockWorkouts.filter((workout) => {
+    return weekDates.some((date) => isSameDay(date.toDate(), workout.date));
   });
 
   const filteredWorkouts = mockWorkouts.filter(
@@ -44,7 +54,6 @@ const Index = () => {
           onSelectDate={setSelectedDate}
           selectedDate={selectedDate}
         />
-
         <div className="mb-4">
           <h2 className="text-xl font-semibold mb-3">Treinos do dia</h2>
 
@@ -81,6 +90,7 @@ const Index = () => {
             </div>
           )}
         </div>
+        <WeekReview workouts={thisWeekWorkouts} weekDates={weekDates} />
 
         {mockWorkouts.length > 0 && (
           <div>
