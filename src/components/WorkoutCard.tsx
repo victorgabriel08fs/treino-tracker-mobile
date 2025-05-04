@@ -5,6 +5,7 @@ import { Dumbbell, ChevronRight, BicepsFlexed } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import moment from "moment";
+import { WorkoutIcon } from "./WorkoutIcon";
 
 interface WorkoutCardProps {
   id: string;
@@ -17,9 +18,7 @@ interface WorkoutCardProps {
   workoutType: string;
 }
 
-interface WorkoutIconProps {
-  type: string;
-}
+
 
 const WorkoutCard = ({
   id,
@@ -31,20 +30,7 @@ const WorkoutCard = ({
   isCompleted,
   isPending,
 }: WorkoutCardProps) => {
-  const WorkoutIcon = ({ type }: WorkoutIconProps) => {
-    switch (type) {
-      case "Força":
-        return <Dumbbell className="h-5 w-5 text-primary" />;
-      case "Hipertrofia":
-        return <BicepsFlexed className="h-5 w-5 text-red-600" />;
-      case "Resistência":
-        return <FaPersonRunning className="h-5 w-5 text-yellow-500" />;
-      case "Funcional":
-        return <FaPersonRunning className="h-5 w-5 text-primary" />;
-      default:
-        return <Dumbbell className="h-5 w-5 text-primary" />;
-    }
-  };
+  
 
   const isBeforeToday = (date: Date) => {
     const today = new Date();
@@ -55,6 +41,7 @@ const WorkoutCard = ({
 
     return incomingDate.getTime() < today.getTime();
   };
+  console.log(workoutType)
   date = moment(date).utc().toDate();
   return (
     <Link

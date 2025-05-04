@@ -1,6 +1,7 @@
 import { getValidWorkouts } from "@/functions";
 import { isSameDay } from "date-fns";
 import moment from "moment";
+import { WorkoutIcon } from "./WorkoutIcon";
 const DayCard = ({ day, workout }) => {
   const isCompleted = workout ? getValidWorkouts([workout]).length > 0 : false;
 
@@ -16,7 +17,7 @@ const DayCard = ({ day, workout }) => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-between w-20 h-24 px-2 py-2 rounded-lg border border-b-4 ${
+      className={`flex flex-col items-center justify-between min-w-24 h-32 px-2 py-2 rounded-lg border border-b-4 ${
         workout
           ? isCompleted
             ? "border-b-green-500"
@@ -27,7 +28,8 @@ const DayCard = ({ day, workout }) => {
       } bg-amber-100`}
     >
       <div className="font-bold text-xs">{day}</div>
-      <div className="font-semibold text-sm max-w-16 text-center break-words overflow-hidden text-ellipsis line-clamp-2">
+      <div><WorkoutIcon type={workout?.workoutType} /></div>
+      <div className="font-semibold text-sm max-w-20 text-center break-words overflow-hidden text-ellipsis line-clamp-2">
         {workout?.name ?? "Sem treino"}
       </div>
     </div>
