@@ -41,7 +41,6 @@ const WorkoutCard = ({
 
     return incomingDate.getTime() < today.getTime();
   };
-  console.log(workoutType)
   date = moment(date).utc().toDate();
   return (
     <Link
