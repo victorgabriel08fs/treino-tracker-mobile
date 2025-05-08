@@ -12,6 +12,7 @@ import { getValidWorkouts } from "@/functions";
 import { get } from "http";
 import WeekReview from "@/components/WeekReview";
 import moment from "moment";
+import TopThree from "@/components/TopThree";
 
 const Index = () => {
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
@@ -99,6 +100,12 @@ const Index = () => {
               <WorkoutNumbers
                 workouts={getWorkouts(selectedUser.id, { sort: true })}
               />
+            </div>
+            <div className="mb-4">
+              <h2 className="text-xl font-semibold mb-3">
+                Top 3 Favoritos
+              </h2>
+              <TopThree workouts={getWorkouts(selectedUser.id, { sort: true })} />
             </div>
             <div className="mb-4">
               <h2 className="text-xl font-semibold mb-3">
