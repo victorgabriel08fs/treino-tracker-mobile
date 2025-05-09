@@ -5,6 +5,7 @@ import funcional from "./assets/header_images/funcional.jpg";
 import { Workout } from "./types";
 import { muscleGroups } from "./static_data";
 import { getSelectedUser, getWorkouts, updateWorkout } from "./storage";
+import { get } from "https";
 
 export const getWorkoutTypeImage = (workoutType: string) => {
   switch (workoutType) {
@@ -62,17 +63,19 @@ const getUnlessMuscleGroup = (validWorkouts) => {
   const muscleGroupsCount = [];
   validWorkouts.map((workout) => {
     workout.muscleGroups.forEach((muscleGroup) => {
-      if (!muscleGroupsCount.filter((group) => group.id === muscleGroup)[0]) {
-        muscleGroupsCount.push({
-          id: muscleGroup,
-          name: getMuscleGroupName(muscleGroup),
-          count: 1,
-        });
-      } else {
-        const index = muscleGroupsCount.findIndex(
-          (group) => group.id === muscleGroup
-        );
-        muscleGroupsCount[index].count += 1;
+      if (getMuscleGroupName(muscleGroup)) {
+        if (!muscleGroupsCount.filter((group) => group.id === muscleGroup)[0]) {
+          muscleGroupsCount.push({
+            id: muscleGroup,
+            name: getMuscleGroupName(muscleGroup),
+            count: 1,
+          });
+        } else {
+          const index = muscleGroupsCount.findIndex(
+            (group) => group.id === muscleGroup
+          );
+          muscleGroupsCount[index].count += 1;
+        }
       }
     });
   });
@@ -84,25 +87,27 @@ const getLongestTimeWithoutMuscleGroup = (validWorkouts) => {
   const muscleGroupsCount = [];
   validWorkouts.map((workout) => {
     workout.muscleGroups.forEach((muscleGroup) => {
-      if (!muscleGroupsCount.filter((group) => group.id === muscleGroup)[0]) {
-        muscleGroupsCount.push({
-          id: muscleGroup,
-          name: getMuscleGroupName(muscleGroup),
-          days:
+      if (getMuscleGroupName(muscleGroup)) {
+        if (!muscleGroupsCount.filter((group) => group.id === muscleGroup)[0]) {
+          muscleGroupsCount.push({
+            id: muscleGroup,
+            name: getMuscleGroupName(muscleGroup),
+            days:
+              (new Date().getTime() - workout.date.getTime()) /
+              (1000 * 60 * 60 * 24),
+          });
+        } else {
+          const index = muscleGroupsCount.findIndex(
+            (group) => group.id === muscleGroup
+          );
+          const days =
             (new Date().getTime() - workout.date.getTime()) /
-            (1000 * 60 * 60 * 24),
-        });
-      } else {
-        const index = muscleGroupsCount.findIndex(
-          (group) => group.id === muscleGroup
-        );
-        const days =
-          (new Date().getTime() - workout.date.getTime()) /
-          (1000 * 60 * 60 * 24);
-        muscleGroupsCount[index].days = Math.max(
-          muscleGroupsCount[index].days,
-          days
-        );
+            (1000 * 60 * 60 * 24);
+          muscleGroupsCount[index].days = Math.max(
+            muscleGroupsCount[index].days,
+            days
+          );
+        }
       }
     });
   });
