@@ -13,6 +13,8 @@ import { get } from "http";
 import WeekReview from "@/components/WeekReview";
 import moment from "moment";
 import TopThree from "@/components/TopThree";
+import { fi } from "date-fns/locale";
+import SugestedWorkouts from "@/components/SugestedWorkouts";
 
 const Index = () => {
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
@@ -91,6 +93,12 @@ const Index = () => {
             </div>
           )}
         </div>
+        {filteredWorkouts.length === 0 && (
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold mb-3">Sugestões</h2>
+            <SugestedWorkouts />
+          </div>
+        )}
         <WeekReview workouts={thisWeekWorkouts} weekDates={weekDates} />
 
         {mockWorkouts.length > 0 && (
@@ -102,10 +110,10 @@ const Index = () => {
               />
             </div>
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-3">
-                Top 3 Favoritos
-              </h2>
-              <TopThree workouts={getWorkouts(selectedUser.id, { sort: true })} />
+              <h2 className="text-xl font-semibold mb-3">Top 3 Favoritos</h2>
+              <TopThree
+                workouts={getWorkouts(selectedUser.id, { sort: true })}
+              />
             </div>
             <div className="mb-4">
               <h2 className="text-xl font-semibold mb-3">

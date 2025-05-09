@@ -57,3 +57,71 @@ export const muscleGroupMigration = () => {
     return workout;
   });
 };
+
+const getUnlessMuscleGroup = (validWorkouts) => {
+  const muscleGroupsCount = [];
+  validWorkouts.map((workout) => {
+    workout.muscleGroups.forEach((muscleGroup) => {
+      if (!muscleGroupsCount.filter((group) => group.id === muscleGroup)[0]) {
+        muscleGroupsCount.push({
+          id: muscleGroup,
+          name: getMuscleGroupName(muscleGroup),
+          count: 1,
+        });
+      } else {
+        const index = muscleGroupsCount.findIndex(
+          (group) => group.id === muscleGroup
+        );
+        muscleGroupsCount[index].count += 1;
+      }
+    });
+  });
+  muscleGroupsCount.sort((a, b) => a.count - b.count);
+  return muscleGroupsCount[0];
+};
+
+const getLongestTimeWithoutMuscleGroup = (validWorkouts) => {
+  const muscleGroupsCount = [];
+  validWorkouts.map((workout) => {
+    workout.muscleGroups.forEach((muscleGroup) => {
+      if (!muscleGroupsCount.filter((group) => group.id === muscleGroup)[0]) {
+        muscleGroupsCount.push({
+          id: muscleGroup,
+          name: getMuscleGroupName(muscleGroup),
+          days:
+            (new Date().getTime() - workout.date.getTime()) /
+            (1000 * 60 * 60 * 24),
+        });
+      } else {
+        const index = muscleGroupsCount.findIndex(
+          (group) => group.id === muscleGroup
+        );
+        const days =
+          (new Date().getTime() - workout.date.getTime()) /
+          (1000 * 60 * 60 * 24);
+        muscleGroupsCount[index].days = Math.max(
+          muscleGroupsCount[index].days,
+          days
+        );
+      }
+    });
+  });
+  muscleGroupsCount.sort((a, b) => a.days - b.days);
+  return muscleGroupsCount[0];
+};
+
+export const getSugestedWorkouts = () => {
+  const workouts = getWorkouts(getSelectedUser().id);
+  const valid = getValidWorkouts(workouts);
+
+  return [
+    {
+      title: "Há tempos sem treinar",
+      workout: getLongestTimeWithoutMuscleGroup(valid),
+    },
+    {
+      title: "Menos treinado",
+      workout: getUnlessMuscleGroup(valid),
+    },
+  ];
+};
