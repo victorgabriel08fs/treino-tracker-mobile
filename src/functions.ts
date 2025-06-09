@@ -132,20 +132,17 @@ export const getSugestedWorkouts = () => {
 };
 
 export const fixMuscleGroups = () => {
+  if (!getSelectedUser()) return;
   const workouts = getWorkouts(getSelectedUser().id);
   workouts.map((workout) => {
     if (workout?.muscleGroups) {
-      workout.muscleGroups.map((muscleGroup) => {
-        if (!getMuscleGroupName(muscleGroup)) {
-          workout.muscleGroups.splice(
-            workout.muscleGroups.indexOf(muscleGroup),
-            1
-          );
-        }
-      });
+      workout.muscleGroups = workout.muscleGroups.filter(
+        (muscleGroup) => !!getMuscleGroupName(muscleGroup)
+      );
     }
   });
-  const updatedWorkouts = workouts; 
-  
-  updateWorkout(getSelectedUser().id, updatedWorkouts);
+  const updatedWorkouts = workouts;
+  updatedWorkouts.map((workout) => {
+    updateWorkout(getSelectedUser().id, workout);
+  })
 };
