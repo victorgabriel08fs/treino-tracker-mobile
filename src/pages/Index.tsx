@@ -19,10 +19,9 @@ import SugestedWorkouts from "@/components/SugestedWorkouts";
 const Index = () => {
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
 
-  const [mockWorkouts, setMockWorkouts] = useState([]);
-  if (selectedUser && selectedUser.id) {
-    setMockWorkouts(getWorkouts(selectedUser.id));
-  }
+  const [mockWorkouts, setMockWorkouts] = useState(
+    getWorkouts(selectedUser.id)
+  );
   const [selectedDate, setSelectedDate] = useState(new Date());
   const workoutDates = mockWorkouts.map((workout) => {
     return {
