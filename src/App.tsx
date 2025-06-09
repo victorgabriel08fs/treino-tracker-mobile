@@ -15,7 +15,7 @@ import Profile from "./pages/Profile";
 import { getSelectedUser, getUsers, setSelectedUser } from "./storage";
 import CreateUser from "./pages/CreateUser";
 import api from "./api";
-import { muscleGroupMigration } from "./functions";
+import { fixMuscleGroups, muscleGroupMigration } from "./functions";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +23,7 @@ const App = () => {
   const [key, setKey] = useState(0);
   useEffect(() => {
     handleTestApi();
+    fixMuscleGroups();
     if (!getSelectedUser()) {
       if (getUsers().length > 0) setSelectedUser(getUsers()[0].id);
     }

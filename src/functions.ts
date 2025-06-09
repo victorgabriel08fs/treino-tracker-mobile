@@ -130,3 +130,19 @@ export const getSugestedWorkouts = () => {
     },
   ];
 };
+
+export const fixMuscleGroups = () => {
+  const workouts = getWorkouts(getSelectedUser().id);
+  workouts.map((workout) => {
+    if (workout?.muscleGroups) {
+      workout.muscleGroups.map((muscleGroup) => {
+        if (!getMuscleGroupName(muscleGroup)) {
+          workout.muscleGroups.splice(
+            workout.muscleGroups.indexOf(muscleGroup),
+            1
+          );
+        }
+      });
+    }
+  });
+};
