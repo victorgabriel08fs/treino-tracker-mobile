@@ -145,4 +145,7 @@ export const fixMuscleGroups = () => {
       });
     }
   });
+  const updatedWorkouts = workouts; 
+  
+  updateWorkout(getSelectedUser().id, updatedWorkouts);
 };
