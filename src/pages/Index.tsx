@@ -93,7 +93,7 @@ const Index = () => {
             </div>
           )}
         </div>
-        {filteredWorkouts.length === 0 && selectedUser && (
+        {filteredWorkouts.length === 0 && (
           <div className="mb-4">
             <h2 className="text-xl font-semibold mb-3">Sugestões</h2>
             <SugestedWorkouts />
