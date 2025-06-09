@@ -221,16 +221,14 @@ const NewWorkout = () => {
                       : "bg-card border-border hover:bg-accent"
                   }`}
                   onClick={() => {
-                    if (selectedMuscleGroups.includes(group.name)) {
+                    if (selectedMuscleGroups.includes(group.id)) {
                       setSelectedMuscleGroups(
-                        selectedMuscleGroups.filter(
-                          (name) => name !== group.name
-                        )
+                        selectedMuscleGroups.filter((name) => name !== group.id)
                       );
                     } else {
                       setSelectedMuscleGroups([
                         ...selectedMuscleGroups,
-                        group.name,
+                        group.id,
                       ]);
                     }
                   }}
