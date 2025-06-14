@@ -158,9 +158,9 @@ const Calendar = ({
       </div>
       <Legend
         items={[
-          { title: "Concluído", color: "bg-green-500" },
-          { title: "Pendente", color: "bg-yellow-500" },
-          { title: "Atrasado", color: "bg-red-500" },
+          { title: "Realizado", color: "bg-green-500" },
+          { title: "Programado", color: "bg-yellow-500" },
+          { title: "Não realizado", color: "bg-red-500" },
         ]}
       />
     </div>
