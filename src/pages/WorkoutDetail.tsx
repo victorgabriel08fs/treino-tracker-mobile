@@ -28,9 +28,87 @@ import {
   getSelectedUser,
   getWorkout,
   removeWorkout,
+  updateWorkout,
 } from "@/storage";
 import { Exercise, Workout } from "@/types";
 import { getMuscleGroupName, getWorkoutTypeImage } from "@/functions";
+import SimpleModal from "@/components/SimpleModal";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
+const WorkoutConclusionModal = ({ isOpen, onClose, confirmation }) => {
+  return (
+    <SimpleModal>
+      <h3
+        className="text-lg leading-6 font-medium text-gray-900"
+        id="modal-title"
+      >
+        Você acaba de concluir o seu treino. Deseja completar informações sobre
+        este?
+      </h3>
+      <div className="flex flex-row mt-4 justify-center items-center gap-4">
+        <Button
+          className="bg-red-500 border-red-500 font-bold"
+          onClick={onClose}
+        >
+          Não
+        </Button>
+        <Button
+          className="bg-green-500 border-green-500 font-bold"
+          onClick={confirmation}
+        >
+          Sim
+        </Button>
+      </div>
+    </SimpleModal>
+  );
+};
+
+const WorkoutConclusionFormModal = ({ isOpen, onClose, workout }) => {
+  const [realDuration, setRealDuration] = useState(0);
+  const handleConclusion = () => {
+    workout.realDuration = realDuration;
+    updateWorkout(getSelectedUser().id, workout);
+    onClose();
+    toast.success("Treino concluído!");
+  };
+  return (
+    <SimpleModal>
+      <h3
+        className="text-lg leading-6 font-medium text-gray-900"
+        id="modal-title"
+      >
+        Treino de {workout.name}
+      </h3>
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <Label htmlFor="realDuration">Duração Real do Treino</Label>
+          <Input
+            id="realDuration"
+            type="number"
+            placeholder="Ex: 30 minutos"
+            onChange={(e) => setRealDuration(parseInt(e.target.value))}
+          />
+        </div>
+      </div>
+      <div className="flex flex-row mt-4 justify-center items-center gap-4">
+        <Button
+          className="bg-red-500 border-red-500 font-bold"
+          onClick={onClose}
+        >
+          Cancelar
+        </Button>
+        <Button
+          className="bg-green-500 border-green-500 font-bold"
+          onClick={handleConclusion}
+        >
+          Salvar
+        </Button>
+      </div>
+    </SimpleModal>
+  );
+};
 
 const WorkoutDetail = () => {
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
@@ -56,6 +134,9 @@ const WorkoutDetail = () => {
       // Agora verifica se todos foram concluídos após a atualização do estado
       if (newExercises.every((ex) => ex.isCompleted)) {
         toast.success("Parabéns, todos os exercícios foram concluídos!");
+        if (!mockWorkout.realDuration) {
+          setIsConclusionModalOpen(true);
+        }
       }
 
       return newExercises;
@@ -64,6 +145,14 @@ const WorkoutDetail = () => {
 
   const completedExercises = exercises.filter((ex) => ex.isCompleted).length;
   const progress = (completedExercises / exercises.length) * 100;
+
+  const [isConclusionModalOpen, setIsConclusionModalOpen] = useState(false);
+  const [isConclusionFormModalOpen, setIsConclusionFormModalOpen] =
+    useState(false);
+  const handleConclusionConfirmation = () => {
+    setIsConclusionModalOpen(false);
+    setIsConclusionFormModalOpen(true);
+  };
   const printWorkout = () => {
     const printContent = `
       <html>
@@ -317,7 +406,20 @@ const WorkoutDetail = () => {
             <p className="text-sm text-muted-foreground">{mockWorkout.notes}</p>
           </div>
         )}
-
+        {isConclusionModalOpen && !isConclusionFormModalOpen && (
+          <WorkoutConclusionModal
+            isOpen={isConclusionModalOpen}
+            onClose={() => setIsConclusionModalOpen(false)}
+            confirmation={handleConclusionConfirmation}
+          />
+        )}
+        {isConclusionFormModalOpen && !isConclusionModalOpen && (
+          <WorkoutConclusionFormModal
+            isOpen={isConclusionFormModalOpen}
+            onClose={() => setIsConclusionFormModalOpen(false)}
+            workout={mockWorkout}
+          />
+        )}
         <div className="mb-6">
           <h2 className="text-lg font-semibold mb-3">Exercícios</h2>
 
