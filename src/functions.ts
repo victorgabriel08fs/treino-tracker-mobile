@@ -29,6 +29,42 @@ export const getValidWorkouts = (workouts: Workout[]) => {
   );
 };
 
+export const getThisMonthWorkouts = (workouts: Workout[]) => {
+  return workouts.filter(
+    (workout) => new Date(workout.date).getMonth() === new Date().getMonth()
+  );
+};
+
+export const getPastMonthWorkouts = (workouts: Workout[]) => {
+  const lastMonth = new Date().getMonth() - 1;
+  const lastMonthYear = lastMonth === -1 ? new Date().getFullYear() - 1 : new Date().getFullYear();
+  return workouts.filter(
+    (workout) => new Date(workout.date).getMonth() === lastMonth && new Date(workout.date).getFullYear() === lastMonthYear
+  );
+};
+
+export const getPastWeekWorkouts = (workouts: Workout[]) => {
+  const today = new Date();
+  const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay() - 7));
+  const endOfWeek = new Date(today.setDate(startOfWeek.getDate() + 6));
+
+  return workouts.filter(
+    (workout) => 
+      workout.date >= startOfWeek && workout.date <= endOfWeek
+  );
+};
+
+export const getThisWeekWorkouts = (workouts: Workout[]) => {
+  const today = new Date();
+  const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+  const endOfWeek = new Date(today.setDate(startOfWeek.getDate() + 6));
+
+  return workouts.filter(
+    (workout) => 
+      workout.date >= startOfWeek && workout.date <= endOfWeek
+  );
+};
+
 export const getValidExercises = (workouts: Workout[]) => {
   return workouts
     .map((workout) => workout.exercises)
@@ -144,5 +180,5 @@ export const fixMuscleGroups = () => {
   const updatedWorkouts = workouts;
   updatedWorkouts.map((workout) => {
     updateWorkout(getSelectedUser().id, workout);
-  })
+  });
 };

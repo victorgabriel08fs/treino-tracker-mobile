@@ -104,8 +104,16 @@ const Index = () => {
         {mockWorkouts.length > 0 && (
           <div>
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-3">Alguns números</h2>
+              <h2 className="text-xl font-semibold mb-3">Sua semana</h2>
               <WorkoutNumbers
+                type="weekly"
+                workouts={getWorkouts(selectedUser.id, { sort: true })}
+              />
+            </div>
+            <div className="mb-4">
+              <h2 className="text-xl font-semibold mb-3">Seu mês</h2>
+              <WorkoutNumbers
+                type="monthly"
                 workouts={getWorkouts(selectedUser.id, { sort: true })}
               />
             </div>
