@@ -96,8 +96,8 @@ const WorkoutNumbers = ({ workouts, type }) => {
                 pastWorkoutsCount != null &&
                 pastWorkoutsCount - workoutsCount != 0
                   ? pastWorkoutsCount > workoutsCount
-                    ? `↓ ${pastWorkoutsCount - workoutsCount}`
-                    : `↑ ${workoutsCount - pastWorkoutsCount}`
+                    ? `↓${pastWorkoutsCount - workoutsCount}`
+                    : `↑${workoutsCount - pastWorkoutsCount}`
                   : null
               }
               obsColor={
@@ -117,8 +117,8 @@ const WorkoutNumbers = ({ workouts, type }) => {
                 pastExercisesCount != null &&
                 pastExercisesCount - exercisesCount != 0
                   ? pastExercisesCount > exercisesCount
-                    ? `↓ ${pastExercisesCount - exercisesCount}`
-                    : `↑ ${exercisesCount - pastExercisesCount}`
+                    ? `↓${pastExercisesCount - exercisesCount}`
+                    : `↑${exercisesCount - pastExercisesCount}`
                   : null
               }
               obsColor={
