@@ -9,14 +9,15 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "./ui/carousel";
+import { useState } from "react";
 
-const ExercisesChart = ({ data }) => {
+const ExercisesChart = ({ data, period }) => {
   const months = [];
   const exercises = [];
   const workoutTime = [];
   const workoutsCount = [];
 
-  for (let i = 11; i >= 0; i--) {
+  for (let i = period - 1; i >= 0; i--) {
     const month = moment().subtract(i, "months");
     months.push(month.locale("pt-br").format("MMM"));
     let numberOfExercises = 0;
@@ -52,7 +53,7 @@ const ExercisesChart = ({ data }) => {
     <div>
       <div>Números concretos</div>
       <Chart
-        type="line"
+        type="bar"
         options={{
           chart: {
             id: "numeros-concretos",
@@ -128,15 +129,26 @@ const WorkoutTypeChart = ({ data }) => {
 };
 
 const WorkoutCharts = ({ workouts }) => {
+  const [period, setPeriod] = useState(3);
   return (
     <div className="flex px-5 flex-col gap-10">
+      <div>
+        <select
+          className="select select-bordered w-full max-w-xs"
+          onChange={(e) => setPeriod(e.target.value)}
+        >
+          <option value={3}>Últimos 3 meses</option>
+          <option value={6}>Últimos 6 meses</option>
+          <option value={12}>Último 1 ano</option>
+        </select>
+      </div>
       <Carousel
         className="w-full max-w-lg mx-auto"
         opts={{ slidesToScroll: 1 }}
       >
         <CarouselContent>
           <CarouselItem className="basis-full">
-            <ExercisesChart data={workouts} />
+            <ExercisesChart period={period} data={workouts} />
           </CarouselItem>
           <CarouselItem className="basis-full">
             <WorkoutTypeChart data={workouts} />
