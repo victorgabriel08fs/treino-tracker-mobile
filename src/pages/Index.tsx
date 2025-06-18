@@ -118,16 +118,16 @@ const Index = () => {
               />
             </div>
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-3">Top 3 Favoritos</h2>
-              <TopThree
+              <h2 className="text-xl font-semibold mb-3">
+                Seus gráficos
+              </h2>
+              <WorkoutCharts
                 workouts={getWorkouts(selectedUser.id, { sort: true })}
               />
             </div>
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-3">
-                Agora seus gráficos
-              </h2>
-              <WorkoutCharts
+              <h2 className="text-xl font-semibold mb-3">Top 3 Favoritos</h2>
+              <TopThree
                 workouts={getWorkouts(selectedUser.id, { sort: true })}
               />
             </div>
