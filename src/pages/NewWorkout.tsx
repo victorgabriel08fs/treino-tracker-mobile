@@ -216,7 +216,7 @@ const NewWorkout = () => {
                   key={group.id}
                   type="button"
                   className={`p-2 rounded-md border text-sm transition-all ${
-                    selectedMuscleGroups.includes(group.name)
+                    selectedMuscleGroups.includes(group.id)
                       ? "bg-primary text-primary-foreground font-semibold"
                       : "bg-card border-border hover:bg-accent"
                   }`}
