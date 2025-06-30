@@ -10,6 +10,7 @@ import {
 import { RiMedalFill } from "react-icons/ri";
 import {
   getMuscleGroupName,
+  getThisMonthWorkouts,
   getValidExercises,
   getValidWorkouts,
 } from "@/functions";
@@ -39,8 +40,9 @@ const TopThreeCard = ({ title, first, second, third, icon = null }) => {
 const TopThree = ({ workouts }) => {
   const getMuscleGroupsTopThree = () => {
     const valid = getValidWorkouts(workouts);
+    const thisMonthWorkouts = getThisMonthWorkouts(workouts);
     const muscleGroupsCount = [];
-    valid.map((workout) => {
+    thisMonthWorkouts.map((workout) => {
       workout.muscleGroups.forEach((muscleGroup) => {
         if (!muscleGroupsCount.filter((group) => group.id === muscleGroup)[0]) {
           muscleGroupsCount.push({
@@ -73,26 +75,32 @@ const TopThree = ({ workouts }) => {
   if (items.length === 2) basis = "basis-1/2";
   if (items.length === 1) basis = "basis-full";
   return (
-    <div className="flex px-5 flex-col gap-10">
-      <Carousel className="w-full">
-        <CarouselPrevious className="ml-2" />
-        <CarouselNext className="mr-2" />
-        <CarouselContent className="gap-4 px-4">
-          {items.map((item) => (
-            <CarouselItem
-              className={`p-2 ${item.background} rounded-lg ${basis}`}
-            >
-              <TopThreeCard
-                title={item.title}
-                first={item.first}
-                second={item.second ?? null}
-                third={item.third ?? null}
-              />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
-    </div>
+    <>
+      {getMuscleGroupsTopThree()[0] ? (
+        <div className="flex px-5 flex-col gap-10">
+          <Carousel className="w-full">
+            <CarouselPrevious className="ml-2" />
+            <CarouselNext className="mr-2" />
+            <CarouselContent className="gap-4 px-4">
+              {items.map((item) => (
+                <CarouselItem
+                  className={`p-2 ${item.background} rounded-lg ${basis}`}
+                >
+                  <TopThreeCard
+                    title={item.title}
+                    first={item.first}
+                    second={item.second ?? null}
+                    third={item.third ?? null}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
+      ) : (
+        <div>Por enquanto não há dados suficientes...</div>
+      )}
+    </>
   );
 };
 

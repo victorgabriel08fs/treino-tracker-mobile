@@ -126,7 +126,7 @@ const Index = () => {
               />
             </div>
             <div className="mb-4">
-              <h2 className="text-xl font-semibold mb-3">Top 3 Favoritos</h2>
+              <h2 className="text-xl font-semibold mb-3">Esteve foi seu foco do mês</h2>
               <TopThree
                 workouts={getWorkouts(selectedUser.id, { sort: true })}
               />
