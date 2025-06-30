@@ -6,6 +6,7 @@ import { Workout } from "./types";
 import { muscleGroups } from "./static_data";
 import { getSelectedUser, getWorkouts, updateWorkout } from "./storage";
 import { get } from "https";
+import moment from "moment";
 
 export const getWorkoutTypeImage = (workoutType: string) => {
   switch (workoutType) {
@@ -37,31 +38,33 @@ export const getThisMonthWorkouts = (workouts: Workout[]) => {
 
 export const getPastMonthWorkouts = (workouts: Workout[]) => {
   const lastMonth = new Date().getMonth() - 1;
-  const lastMonthYear = lastMonth === -1 ? new Date().getFullYear() - 1 : new Date().getFullYear();
+  const lastMonthYear =
+    lastMonth === -1 ? new Date().getFullYear() - 1 : new Date().getFullYear();
   return workouts.filter(
-    (workout) => new Date(workout.date).getMonth() === lastMonth && new Date(workout.date).getFullYear() === lastMonthYear
+    (workout) =>
+      new Date(workout.date).getMonth() === lastMonth &&
+      new Date(workout.date).getFullYear() === lastMonthYear
   );
 };
 
 export const getPastWeekWorkouts = (workouts: Workout[]) => {
-  const today = new Date();
-  const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay() - 7));
-  const endOfWeek = new Date(today.setDate(startOfWeek.getDate() + 6));
+  const today = moment();
+  const pastWeek = moment(today).subtract(7, "days");
+  const startOfWeek = moment(pastWeek).startOf("week").toDate();
+  const endOfWeek = moment(pastWeek).endOf("week").toDate();
 
   return workouts.filter(
-    (workout) => 
-      workout.date >= startOfWeek && workout.date <= endOfWeek
+    (workout) => workout.date >= startOfWeek && workout.date <= endOfWeek
   );
 };
 
 export const getThisWeekWorkouts = (workouts: Workout[]) => {
-  const today = new Date();
-  const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-  const endOfWeek = new Date(today.setDate(startOfWeek.getDate() + 6));
+  const today = moment();
+  const startOfWeek = moment(today).startOf("week").toDate();
+  const endOfWeek = moment(today).endOf("week").toDate();
 
   return workouts.filter(
-    (workout) => 
-      workout.date >= startOfWeek && workout.date <= endOfWeek
+    (workout) => workout.date >= startOfWeek && workout.date <= endOfWeek
   );
 };
 
