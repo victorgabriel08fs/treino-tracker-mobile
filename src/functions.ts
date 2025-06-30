@@ -31,19 +31,18 @@ export const getValidWorkouts = (workouts: Workout[]) => {
 };
 
 export const getThisMonthWorkouts = (workouts: Workout[]) => {
+  const thisYearMonth = moment().format("YYYY-MM");
   return workouts.filter(
-    (workout) => new Date(workout.date).getMonth() === new Date().getMonth()
+    (workout) => moment(workout.date).format("YYYY-MM") === thisYearMonth
   );
 };
 
 export const getPastMonthWorkouts = (workouts: Workout[]) => {
-  const lastMonth = new Date().getMonth() - 1;
-  const lastMonthYear =
-    lastMonth === -1 ? new Date().getFullYear() - 1 : new Date().getFullYear();
+  const lastYearMonth = moment().subtract(1, "month").format("YYYY-MM");
+
   return workouts.filter(
     (workout) =>
-      new Date(workout.date).getMonth() === lastMonth &&
-      new Date(workout.date).getFullYear() === lastMonthYear
+      moment(workout.date).format("YYYY-MM") === lastYearMonth
   );
 };
 
