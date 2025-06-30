@@ -115,8 +115,7 @@ export const duplicateWorkout = (userId: string, workoutId: string) => {
   const workout = user.workouts.find((workout) => workout.id === workoutId);
   if (!workout) return;
   workout.realDuration = null;
-  workout.date = new Date();
-  const newWorkout = { ...workout, id: uuidv4() };
+  const newWorkout = { ...workout, date: new Date(),id: uuidv4() };
   newWorkout.exercises = newWorkout.exercises.map((exercise) => ({
     ...exercise,
     id: uuidv4(),
