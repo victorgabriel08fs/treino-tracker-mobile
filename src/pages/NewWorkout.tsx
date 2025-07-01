@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
-import { ArrowLeft, Plus, Trash2, X } from "lucide-react";
+import { ArrowLeft, Plus, Trash, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { Exercise, Workout } from "@/types";
 import { v4 as uuidv4 } from "uuid";
@@ -14,6 +14,7 @@ import moment from "moment";
 import BlurImage from "@/components/BlurImage";
 import { getWorkoutTypeImage } from "@/functions";
 import { muscleGroups } from "@/static_data";
+import { set } from "date-fns";
 
 const workoutTypes = [
   { name: "Força", color: "bg-primary" },
@@ -25,6 +26,16 @@ const workoutTypes = [
 const NewWorkout = () => {
   const navigate = useNavigate();
   const [selectedUser, setSelectedUser] = useState(getSelectedUser());
+
+  const [cardioType, setCardioType] = useState("");
+  const [cardioDuration, setCardioDuration] = useState(0);
+  const [cardioDistance, setCardioDistance] = useState(0);
+
+  const clearCardio = () => {
+    setCardioType("");
+    setCardioDuration(0);
+    setCardioDistance(0);
+  };
 
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
@@ -98,6 +109,15 @@ const NewWorkout = () => {
 
     const convertedDate = moment(date).utc().toDate();
 
+    let cardio = null;
+    if(cardioType && cardioDuration && cardioDistance) {
+      cardio = {
+        type: cardioType,
+        duration: cardioDuration,
+        distance: cardioDistance
+      }
+    }
+
     const newWorkout: Workout = {
       id: uuidv4(),
       name: name,
@@ -108,6 +128,7 @@ const NewWorkout = () => {
       workoutType: workoutType,
       muscleGroups: selectedMuscleGroups,
       exercises: exercises,
+      cardio
     };
     addWorkout(selectedUser.id, newWorkout);
 
@@ -236,6 +257,56 @@ const NewWorkout = () => {
                   {group.name}
                 </button>
               ))}
+            </div>
+          </div>
+          <div className="p-4 rounded-lg border border-border bg-card relative">
+            <button
+              type="button"
+              className="absolute top-3 right-3 rounded-full p-1 hover:bg-accent"
+              onClick={clearCardio}
+            >
+              <Trash className="h-4 w-4" />
+            </button>
+
+            <div className="space-y-3">
+              <div>
+                <Label htmlFor={`cardio-type`}>Tipo</Label>
+                <Input
+                  id={`cardio-type`}
+                  value={cardioType}
+                  onChange={(e) => {
+                    setCardioType(e.target.value);
+                  }}
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <Label htmlFor={`cardio-duration`}>Duração (min)</Label>
+                  <Input
+                    id={`cardio-duration`}
+                    type="number"
+                    value={cardioDuration}
+                    min={0}
+                    onChange={(e) => {
+                      setCardioDuration(parseInt(e.target.value));
+                    }}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor={`cardio-distance`}>Distância (km)</Label>
+                  <Input
+                    id={`cardio-distance`}
+                    type="number"
+                    value={cardioDistance}
+                    min={0}
+                    step={0.1}
+                    onChange={(e) => {
+                      setCardioDistance(parseFloat(e.target.value));
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div>

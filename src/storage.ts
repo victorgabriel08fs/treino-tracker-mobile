@@ -74,6 +74,19 @@ export const changeExerciseStatus = (
   return true;
 };
 
+export const changeCardioStatus = (userId: string, workoutId: string) => {
+  const workout = getWorkout(userId, workoutId);
+
+  if(!workout || !workout.cardio) return;
+  
+  const previousCardio = workout.cardio;
+  previousCardio.isCompleted = !previousCardio.isCompleted;
+
+  updateWorkout(userId, {...workout, cardio: previousCardio});
+
+  return {...workout, cardio: previousCardio};
+};
+
 export const getWorkouts = (userId: string, options?: any): Workout[] => {
   const users = getStoredData();
   const user = users.find((user) => user.id === userId);

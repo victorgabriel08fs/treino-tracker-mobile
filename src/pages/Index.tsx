@@ -68,6 +68,7 @@ const Index = () => {
                 name={workout.name}
                 date={workout.date}
                 isToday={false}
+                hasCardio={workout.cardio ? true : false}
                 exerciseCount={workout.exerciseCount}
                 workoutType={workout.workoutType}
                 isCompleted={getValidWorkouts([workout]).length > 0}

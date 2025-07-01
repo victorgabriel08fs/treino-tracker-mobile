@@ -18,6 +18,12 @@ export type Workout = {
   workoutType: string;
   exercises: Exercise[];
   muscleGroups?: string[];
+  cardio?: {
+    type: string;
+    duration: number;
+    distance: number;
+    isCompleted: boolean;
+  }
 };
 
 export type User = {

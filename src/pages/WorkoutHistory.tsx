@@ -102,6 +102,7 @@ const WorkoutHistory = () => {
                       id={workout.id}
                       name={workout.name}
                       date={workout.date}
+                      hasCardio={workout?.cardio ? true : false}
                       isToday={isSameDay(workout.date, new Date())}
                       exerciseCount={workout.exerciseCount}
                       workoutType={workout.workoutType}

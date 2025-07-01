@@ -23,6 +23,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import BlurImage from "../components/BlurImage";
 import {
+  changeCardioStatus,
   changeExerciseStatus,
   duplicateWorkout,
   getSelectedUser,
@@ -36,6 +37,7 @@ import SimpleModal from "@/components/SimpleModal";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import CardioItem from "@/components/CardioItem";
 
 const WorkoutConclusionModal = ({ isOpen, onClose, confirmation }) => {
   return (
@@ -143,8 +145,16 @@ const WorkoutDetail = () => {
     });
   };
 
-  const completedExercises = exercises.filter((ex) => ex.isCompleted).length;
-  const progress = (completedExercises / exercises.length) * 100;
+  const toggleCardioCompletion = () => {
+    if (!mockWorkout.cardio) return;
+    const updated = changeCardioStatus(selectedUser.id, id);
+    setMockWorkout(updated);
+  };
+
+  const completedExercises = exercises.filter((ex) => ex.isCompleted).length + (
+    mockWorkout.cardio?.isCompleted ? 1 : 0);
+  const totalItems = exercises.length + (mockWorkout.cardio ? 1 : 0);
+  const progress = (completedExercises / totalItems) * 100;
 
   const [isConclusionModalOpen, setIsConclusionModalOpen] = useState(false);
   const [isConclusionFormModalOpen, setIsConclusionFormModalOpen] =
@@ -389,7 +399,7 @@ const WorkoutDetail = () => {
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-lg font-semibold">Progresso</h2>
             <span className="text-sm font-medium">
-              {completedExercises}/{exercises.length}
+              {completedExercises}/{totalItems}
             </span>
           </div>
           <div className="h-2 bg-accent rounded-full overflow-hidden">
@@ -434,6 +444,15 @@ const WorkoutDetail = () => {
               onClick={() => toggleCompletion(exercise.id)}
             />
           ))}
+          {mockWorkout.cardio && (
+            <CardioItem
+              type={mockWorkout.cardio.type}
+              duration={mockWorkout.cardio.duration}
+              distance={mockWorkout.cardio.distance}
+              isCompleted={mockWorkout.cardio.isCompleted}
+              onClick={() => toggleCardioCompletion()}
+            />
+          )}
         </div>
       </div>
     </Layout>

@@ -12,6 +12,7 @@ interface WorkoutCardProps {
   name: string;
   date: Date;
   isToday: boolean;
+  hasCardio?: boolean;
   isCompleted: boolean;
   isPending?: boolean;
   exerciseCount: number;
@@ -28,6 +29,7 @@ const WorkoutCard = ({
   workoutType,
   isToday,
   isCompleted,
+  hasCardio = false,
   isPending,
 }: WorkoutCardProps) => {
   
@@ -78,6 +80,9 @@ const WorkoutCard = ({
               <p className="text-xs text-muted-foreground">
                 {exerciseCount} exercícios
               </p>
+              {hasCardio && (
+                <p className="text-xs text-muted-foreground font-bold">Cárdio</p>
+              )}
             </div>
             <ChevronRight className="h-5 w-5 text-muted-foreground" />
           </div>
