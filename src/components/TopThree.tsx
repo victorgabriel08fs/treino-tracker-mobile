@@ -84,6 +84,7 @@ const TopThree = ({ workouts }) => {
             <CarouselContent className="gap-4 px-4">
               {items.map((item) => (
                 <CarouselItem
+                  key={item.title}
                   className={`p-2 ${item.background} rounded-lg ${basis}`}
                 >
                   <TopThreeCard
