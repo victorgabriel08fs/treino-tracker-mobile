@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaPersonRunning } from "react-icons/fa6";
-import { Dumbbell, ChevronRight, BicepsFlexed } from "lucide-react";
+import { Dumbbell, ChevronRight, BicepsFlexed, Activity } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import moment from "moment";
@@ -12,14 +12,17 @@ interface WorkoutCardProps {
   name: string;
   date: Date;
   isToday: boolean;
-  hasCardio?: boolean;
+  cardio?: {
+    type: string;
+    duration: number;
+    distance: number;
+    isCompleted: boolean;
+  };
   isCompleted: boolean;
   isPending?: boolean;
   exerciseCount: number;
   workoutType: string;
 }
-
-
 
 const WorkoutCard = ({
   id,
@@ -29,11 +32,9 @@ const WorkoutCard = ({
   workoutType,
   isToday,
   isCompleted,
-  hasCardio = false,
+  cardio = null,
   isPending,
 }: WorkoutCardProps) => {
-  
-
   const isBeforeToday = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -72,6 +73,32 @@ const WorkoutCard = ({
               </p>
             </div>
           </div>
+          {cardio && (
+            <div className="flex items-center space-x-2">
+              <div
+                className={`text-center flex items-center text-white font-bold p-1 rounded-sm ${
+                  cardio.isCompleted
+                    ? "bg-green-500"
+                    : isBeforeToday(date)
+                    ? "bg-red-500"
+                    : "bg-yellow-500"
+                }`}
+              >
+                <Activity className="h-4 w-4" />
+                <p
+                  className={`text-xs text-white font-bold p-1 rounded-sm ${
+                    cardio.isCompleted
+                      ? "bg-green-500"
+                      : isBeforeToday(date)
+                      ? "bg-red-500"
+                      : "bg-yellow-500"
+                  }`}
+                >
+                  {cardio.type}
+                </p>
+              </div>
+            </div>
+          )}
           <div className="flex items-center space-x-2">
             <div className="text-right">
               <span className="text-sm font-medium text-muted-foreground">
@@ -80,9 +107,6 @@ const WorkoutCard = ({
               <p className="text-xs text-muted-foreground">
                 {exerciseCount} exercícios
               </p>
-              {hasCardio && (
-                <p className="text-xs text-muted-foreground font-bold">Cárdio</p>
-              )}
             </div>
             <ChevronRight className="h-5 w-5 text-muted-foreground" />
           </div>
