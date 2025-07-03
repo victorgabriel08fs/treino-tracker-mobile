@@ -32,7 +32,7 @@ const WorkoutNumberCard = ({
         <div
           className={`${
             obsColor && obsColor + " animate-pulse"
-          } bg-white mt-1 p-1 rounded-sm w-8 h-6 flex items-center justify-center font-bold text-xs`}
+          } bg-white mt-1 p-1 rounded-sm w-fit h-fit flex items-center justify-center font-bold text-xs`}
         >
           {obs}
         </div>
@@ -50,15 +50,25 @@ const WorkoutNumbers = ({ workouts, type }) => {
     pastWorkouts = getPastMonthWorkouts(workouts);
     workouts = getThisMonthWorkouts(workouts);
   }
-  const workoutsCount = getValidWorkouts(workouts).length;
-  const pastWorkoutsCount = getValidWorkouts(pastWorkouts).length;
-  const exercisesCount = getValidExercises(workouts).length;
-  const pastExercisesCount = getValidExercises(pastWorkouts).length;
-
-  const exercisesTotal = workouts.reduce(
-    (total, workout) => total + workout.exercises.length,
+  pastWorkouts = getValidWorkouts(pastWorkouts);
+  workouts = getValidWorkouts(workouts);
+  const exercises = getValidExercises(workouts);
+  const pastExercises = getValidExercises(pastWorkouts);
+  const workoutsCount = workouts.length;
+  const pastWorkoutsCount = pastWorkouts.length;
+  const exercisesCount = exercises.length;
+  const pastExercisesCount = pastExercises.length;
+  const cardio = workouts.filter(
+    (workout) => workout?.cardio?.isCompleted
+  ).length;
+  const expectedCardioTime = workouts.reduce(
+    (total, workout) =>
+      total +
+      (workout?.cardio?.isCompleted ? workout.cardio?.duration || 0 : 0),
     0
   );
+  const cardioTime = expectedCardioTime;
+
   const workoutTime = getValidWorkouts(workouts).reduce(
     (total, workout) => total + workout?.realDuration || 0,
     0
@@ -162,6 +172,23 @@ const WorkoutNumbers = ({ workouts, type }) => {
               value={weight > 1000 ? Math.floor(weight / 1000) : weight}
               obs={`${weightPercent + "%"}`}
               obsColor={weightPercent > 80 ? "text-green-500" : null}
+            />
+          </CarouselItem>
+          <CarouselItem className="p-4 bg-red-400 rounded-lg basis-1/3">
+            <WorkoutNumberCard
+              label={"Cardio" + (cardio > 1 || cardio == 0 ? "s" : "")}
+              value={cardio}
+              obs={
+                cardioTime +
+                (cardioTime === 1
+                  ? " Minuto"
+                  : cardioTime > 59
+                  ? cardioTime / 60 < 2
+                    ? " Hora"
+                    : " Horas"
+                  : " Minutos")
+              }
+              obsColor={null}
             />
           </CarouselItem>
         </CarouselContent>
