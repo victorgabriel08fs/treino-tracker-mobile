@@ -39,10 +39,10 @@ const TopThreeCard = ({ title, first, second, third, icon = null }) => {
 
 const TopThree = ({ workouts }) => {
   const getMuscleGroupsTopThree = () => {
-    const valid = getValidWorkouts(workouts);
     const thisMonthWorkouts = getThisMonthWorkouts(workouts);
+    const valid = getValidWorkouts(thisMonthWorkouts);
     const muscleGroupsCount = [];
-    thisMonthWorkouts.map((workout) => {
+    valid.map((workout) => {
       workout.muscleGroups.forEach((muscleGroup) => {
         if (!muscleGroupsCount.filter((group) => group.id === muscleGroup)[0]) {
           muscleGroupsCount.push({
