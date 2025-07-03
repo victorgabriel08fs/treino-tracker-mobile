@@ -92,10 +92,86 @@ const ExercisesChart = ({ data, period }) => {
   );
 };
 
-const WorkoutTypeChart = ({ data }) => {
+const CardioDistanceTimeChart = ({ data, period }) => {
+  const months = [];
+  const times = [];
+  const distances = [];
+
+  for (let i = period - 1; i >= 0; i--) {
+    const month = moment().subtract(i, "months");
+    months.push(month.locale("pt-br").format("MMM"));
+    let distance = 0;
+    let time = 0;
+    data.forEach((workout) => {
+      const workoutDate = moment(workout.date);
+      if (
+        workoutDate.month() === month.month() &&
+        workoutDate.year() === month.year()
+      ) {
+        if (
+          workout?.cardio &&
+          workout?.cardio?.isCompleted
+        ) {
+          if (workout?.cardio?.duration) time += workout?.cardio.duration;
+          if (workout?.cardio?.distance) distance += workout?.cardio?.distance;
+        }
+      }
+    });
+
+    distances.push(distance);
+    times.push(time);
+  }
+
+  return (
+    <div>
+      <div>Progresso de Cardio</div>
+      <Chart
+        type="line"
+        options={{
+          chart: {
+            id: "numeros-concretos-cardio",
+            locales: [ptBr],
+            defaultLocale: "pt-br",
+            toolbar: {
+              show: true,
+              offsetX: 0,
+              offsetY: 0,
+              tools: {
+                download: true,
+                zoomin: false,
+                reset: false,
+                zoom: false,
+                pan: false,
+                zoomout: false,
+              },
+            },
+          },
+          xaxis: {
+            categories: months,
+          },
+        }}
+        series={[
+          {
+            name: "Distância percorrida (km)",
+            data: distances,
+            color: "#FF0000",
+          },
+          {
+            name: "Tempo de treino (min)",
+            data: times,
+            color: "#0000FF",
+          },
+        ]}
+      />
+    </div>
+  );
+};
+
+const WorkoutTypeChart = ({ data, period }) => {
   const types = [];
   const workoutsPerType = [];
-
+  const initialMonth = moment().subtract(period, "months").startOf("month");
+  data = data.filter((workout) => moment(workout.date).isAfter(initialMonth));
   data.map((workout) => {
     if (!types.includes(workout.workoutType)) {
       types.push(workout.workoutType);
@@ -151,7 +227,10 @@ const WorkoutCharts = ({ workouts }) => {
             <ExercisesChart period={period} data={workouts} />
           </CarouselItem>
           <CarouselItem className="basis-full">
-            <WorkoutTypeChart data={workouts} />
+            <CardioDistanceTimeChart period={period} data={workouts} />
+          </CarouselItem>
+          <CarouselItem className="basis-full">
+            <WorkoutTypeChart data={workouts} period={period} />
           </CarouselItem>
         </CarouselContent>
         <CarouselPrevious className="ml-2" />
