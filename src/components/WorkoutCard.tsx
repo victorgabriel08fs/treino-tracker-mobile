@@ -86,7 +86,7 @@ const WorkoutCard = ({
               >
                 <Activity className="h-4 w-4" />
                 <p
-                  className={`text-xs text-white font-bold p-1 rounded-sm ${
+                  className={`text-xs text-white font-bold p-1 max-sm:hidden rounded-sm ${
                     cardio.isCompleted
                       ? "bg-green-500"
                       : isBeforeToday(date)
