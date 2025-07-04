@@ -64,6 +64,8 @@ const EditWorkout = () => {
   const [realDuration, setRealDuration] = useState(
     mockWorkout?.realDuration || null
   );
+  const [cardioIsCompleted, setCardioIsCompleted] = useState(
+    mockWorkout?.cardio?.isCompleted || false);
   const [workoutType, setWorkoutType] = useState(mockWorkout.workoutType);
   const [exercises, setExercises] = useState<Exercise[]>(mockWorkout.exercises);
   const [notes, setNotes] = useState(mockWorkout.notes);
@@ -129,6 +131,7 @@ const EditWorkout = () => {
         distance: cardioDistance,
         realDistance: cardioRealDistance,
         realDuration: cardioRealDuration,
+        isCompleted: cardioIsCompleted
       };
     }
 
