@@ -214,7 +214,7 @@ const WorkoutNumbers = ({ workouts, type }) => {
           </CarouselItem>
           <CarouselItem className="p-4 bg-red-400 rounded-lg basis-1/3">
             <WorkoutNumberCard
-              label={"Km" + (cardioDistance > 1 || cardio == 0 ? "s" : "")}
+              label={"km" + (cardioDistance > 1 || cardio == 0 ? "s" : "")}
               value={cardioDistance}
               obs={
                 cardioPace
