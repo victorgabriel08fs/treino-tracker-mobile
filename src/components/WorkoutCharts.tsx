@@ -112,8 +112,8 @@ const CardioDistanceTimeChart = ({ data, period }) => {
           workout?.cardio &&
           workout?.cardio?.isCompleted
         ) {
-          if (workout?.cardio?.duration) time += workout?.cardio.duration;
-          if (workout?.cardio?.distance) distance += workout?.cardio?.distance;
+          if (workout?.cardio?.duration) time += workout?.cardio?.realDuration;
+          if (workout?.cardio?.distance) distance += workout?.cardio?.realDistance;
         }
       }
     });
