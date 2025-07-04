@@ -67,7 +67,20 @@ const WorkoutNumbers = ({ workouts, type }) => {
       (workout?.cardio?.isCompleted ? workout.cardio?.duration || 0 : 0),
     0
   );
-  const cardioTime = expectedCardioTime;
+  const cardioTime = workouts.reduce(
+    (total, workout) =>
+      total +
+      (workout?.cardio?.isCompleted ? workout.cardio?.realDuration || 0 : 0),
+    0
+  );
+  const cardioDistance = workouts.reduce(
+    (total, workout) =>
+      total +
+      (workout?.cardio?.isCompleted ? workout.cardio?.realDistance || 0 : 0),
+    0
+  );
+  let cardioPace = null;
+  if (cardioTime && cardioDistance) cardioPace = cardioTime / cardioDistance;
 
   const workoutTime = getValidWorkouts(workouts).reduce(
     (total, workout) => total + workout?.realDuration || 0,
@@ -91,6 +104,14 @@ const WorkoutNumbers = ({ workouts, type }) => {
       ),
     0
   );
+  console.log({
+    cardioTime,
+    cardioDistance,
+    cardioPace,
+    a: cardioTime/60,
+    b: Math.floor(cardioTime/60),
+    
+  })
   const weightPercent = Math.round((weight * 100) / weightTotal);
   return (
     <div className="flex px-5 flex-col gap-10">
@@ -174,12 +195,12 @@ const WorkoutNumbers = ({ workouts, type }) => {
               obsColor={weightPercent > 80 ? "text-green-500" : null}
             />
           </CarouselItem>
-          <CarouselItem className="p-4 bg-red-400 rounded-lg basis-1/3">
+          <CarouselItem className="p-4 bg-red-500 rounded-lg basis-1/3">
             <WorkoutNumberCard
               label={"Cardio" + (cardio > 1 || cardio == 0 ? "s" : "")}
               value={cardio}
               obs={
-                cardioTime +
+                (cardioTime > 59 ? Math.floor(cardioTime / 60) : cardioTime) +
                 (cardioTime === 1
                   ? " Minuto"
                   : cardioTime > 59
@@ -187,6 +208,21 @@ const WorkoutNumbers = ({ workouts, type }) => {
                     ? " Hora"
                     : " Horas"
                   : " Minutos")
+              }
+              obsColor={null}
+            />
+          </CarouselItem>
+          <CarouselItem className="p-4 bg-red-400 rounded-lg basis-1/3">
+            <WorkoutNumberCard
+              label={"Km" + (cardioDistance > 1 || cardio == 0 ? "s" : "")}
+              value={cardioDistance}
+              obs={
+                cardioPace
+                  ? Math.floor(cardioPace) +
+                    ":" +
+                    (cardioPace - Math.floor(cardioPace)<10? "0":"")+(cardioPace - Math.floor(cardioPace)) * 60 +
+                    " min/km"
+                  : null
               }
               obsColor={null}
             />
