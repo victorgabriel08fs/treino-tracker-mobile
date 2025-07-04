@@ -43,11 +43,19 @@ const EditWorkout = () => {
   const [cardioDistance, setCardioDistance] = useState(
     mockWorkout?.cardio?.distance || 0
   );
+  const [cardioRealDistance, setCardioRealDistance] = useState(
+    mockWorkout?.cardio?.realDistance || 0
+  );
+  const [cardioRealDuration, setCardioRealDuration] = useState(
+    mockWorkout?.cardio?.realDuration || 0
+  );
 
   const clearCardio = () => {
     setCardioType("");
     setCardioDuration(0);
     setCardioDistance(0);
+    setCardioRealDistance(0);
+    setCardioRealDuration(0);
   };
 
   const [name, setName] = useState(mockWorkout.name);
@@ -119,6 +127,8 @@ const EditWorkout = () => {
         type: cardioType,
         duration: cardioDuration,
         distance: cardioDistance,
+        realDistance: cardioRealDistance,
+        realDuration: cardioRealDuration,
       };
     }
 
@@ -284,7 +294,7 @@ const EditWorkout = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
                   <Label htmlFor={`cardio-duration`}>Duração (min)</Label>
                   <Input
@@ -307,6 +317,31 @@ const EditWorkout = () => {
                     step={0.1}
                     onChange={(e) => {
                       setCardioDistance(parseFloat(e.target.value));
+                    }}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor={`cardio-duration`}>Duração real (min)</Label>
+                  <Input
+                    id={`cardio-real-duration`}
+                    type="number"
+                    value={cardioRealDuration}
+                    min={0}
+                    onChange={(e) => {
+                      setCardioRealDuration(parseInt(e.target.value));
+                    }}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor={`cardio-real-distance`}>Distância real (km)</Label>
+                  <Input
+                    id={`cardio-real-distance`}
+                    type="number"
+                    value={cardioRealDistance}
+                    min={0}
+                    step={0.1}
+                    onChange={(e) => {
+                      setCardioRealDistance(parseFloat(e.target.value));
                     }}
                   />
                 </div>

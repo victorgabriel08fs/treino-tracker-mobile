@@ -22,6 +22,8 @@ export type Workout = {
     type: string;
     duration: number;
     distance: number;
+    realDuration?: number;
+    realDistance?: number;
     isCompleted: boolean;
   }
 };
