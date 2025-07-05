@@ -1,20 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-import WorkoutCard from "../components/WorkoutCard";
-import WorkoutCharts from "../components/WorkoutCharts";
-import Calendar from "../components/Calendar";
-import { isSameDay } from "date-fns";
 import AddWorkoutButton from "../components/AddWorkoutButton";
-import { Dumbbell } from "lucide-react";
-import { getProgress, getSelectedUser, getWorkouts } from "@/storage";
-import WorkoutNumbers from "@/components/WorkoutNumbers";
-import { getValidWorkouts } from "@/functions";
-import { get } from "http";
-import WeekReview from "@/components/WeekReview";
-import moment from "moment";
-import TopThree from "@/components/TopThree";
-import { fi } from "date-fns/locale";
-import SugestedWorkouts from "@/components/SugestedWorkouts";
+import { getProgress, getSelectedUser } from "@/storage";
 import ProgressReview from "@/components/ProgressReview";
 
 const YourBody = () => {
