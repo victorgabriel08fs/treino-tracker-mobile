@@ -26,4 +26,5 @@ export type User = {
   username: string;
   email: string;
   workouts: Workout[];
+  progress?: [];
 };

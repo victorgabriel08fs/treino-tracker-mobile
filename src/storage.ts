@@ -74,6 +74,14 @@ export const changeExerciseStatus = (
   return true;
 };
 
+export const getProgress = (userId: string) => {
+  const users = getStoredData();
+  const user = users.find((user) => user.id === userId);
+  if (!user) return 0;
+  const progress = user.progress || [];
+  return progress;
+}
+
 export const getWorkouts = (userId: string, options?: any): Workout[] => {
   const users = getStoredData();
   const user = users.find((user) => user.id === userId);

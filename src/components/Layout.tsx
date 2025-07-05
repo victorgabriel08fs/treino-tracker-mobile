@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Calendar, PlusCircle, History, User } from "lucide-react";
+import { Home, Calendar, PlusCircle, History, User, PersonStanding } from "lucide-react";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,6 +16,7 @@ const Layout = ({ children, props }: LayoutProps) => {
   const navItems = [
     { icon: Home, path: "/", label: "Home" },
     { icon: Calendar, path: "/history", label: "Histórico" },
+    { icon: PersonStanding, path: "/your-body", label: "Seu corpo" },
     { icon: User, path: "/profile", label: "Perfil" },
   ];
 

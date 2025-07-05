@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import { getSelectedUser, getUsers, setSelectedUser } from "./storage";
 import CreateUser from "./pages/CreateUser";
 import api from "./api";
+import YourBody from "./pages/YourBody";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +65,10 @@ const App = () => {
                     <Route
                       path="/history"
                       element={<WorkoutHistory key={`history-${key}`} />}
+                    />
+                    <Route
+                      path="/your-body"
+                      element={<YourBody key={`your-body-${key}`} />}
                     />
                     <Route
                       path="/profile"
